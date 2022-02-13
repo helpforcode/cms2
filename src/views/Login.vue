@@ -1,13 +1,12 @@
 <template>
-  <div>
-    WELCOME
-    <nut-form>
-      <input v-model="username" label="NAME" placeholder="username" @keyup.enter="login" />
-      <input v-model="password" label="PASSWORD" placeholder="password" @keyup.enter="login" />
-      <div class="bottom-bar">
-        <div @click="login">LOG IN</div>
+  <div class="container">
+    <div class="d-flex flex-column justify-center">
+      <v-text-field v-model="username" label="NAME" placeholder="username" @keyup.enter="login" />
+      <v-text-field v-model="password" label="PASSWORD" placeholder="password" @keyup.enter="login" />
+      <div class="bottom-bar" @click="login">
+        <div>LOG IN</div>
       </div>
-    </nut-form>
+    </div>
   </div>
 </template>
 
@@ -41,6 +40,9 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  padding: 3em;
+}
 .bottom-bar {
   display: flex;
   justify-content: center;
