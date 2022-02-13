@@ -5,17 +5,20 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import article from "@/api/article"
 export default {
   name: 'About',
+  data() {
+    return {
+      articles: []
+    }
+  },
   methods: {
 
   },
   mounted() {
-    Vue.axios.get('http://httpbin.org/get').then(response => {
-      console.log(response)
-    }).catch(err => {
-      console.log('err', err)
+    article.articles().then(response => {
+      this.articles = response.data.data.content
     })
   }
 }
