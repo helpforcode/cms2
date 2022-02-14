@@ -6,6 +6,7 @@
       <v-select v-model="categoryId" :items="cates" :item-text="'name'" :item-value="'id'" label="Category"></v-select>
       <v-text-field v-model="title" label="Title"></v-text-field>
       <v-text-field v-model="content" label="Content"></v-text-field>
+      <quill-editor v-model="content"></quill-editor>
       <v-text-field v-model="publishedAt" label="PublishedAt" @focus="toggleDatepicker(true)"></v-text-field>
       <nut-datepicker
           :is-visible="dataPickerVisible"
@@ -24,7 +25,21 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueQuillEditor from 'vue-quill-editor'
 import {categories} from '@/api/category'
+import {add as ArticleAdd} from '@/api/article'
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+Vue.use(VueQuillEditor, {
+  placeholder: 'Input content ...',
+  modules: {
+    toolbar: [{'header': 1},{'header':2}, {'list': 'ordered'}, 'color', 'align', 'bold', 'italic', 'link', 'image']
+  }
+})
 
 export default {
   name: 'ArticleForm',
@@ -40,7 +55,16 @@ export default {
   },
   methods: {
     articleAdd() {
-      console.log(this.title)
+      ArticleAdd({
+        categoryId: this.categoryId,
+        title: this.title,
+        content: this.content,
+        publishedAt: this.publishedAt,
+      }).then(response => {
+        console.log(response)
+      }).catch(error => {
+        console.log(error)
+      })
     },
     publishedAtSelected(d) {
       this.publishedAt = d[5]
