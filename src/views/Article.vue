@@ -1,18 +1,8 @@
 <template>
   <div class="articles d-flex flex-column">
-    <v-icon>fa-solid fa-ellipsis-vertical</v-icon>
-    <v-icon>fa-ellipsis-vertical</v-icon>
-    <v-icon>$add</v-icon>
-    <v-icon>$ops</v-icon>
-    <v-icon>$vuetify.icons.ops</v-icon>
-    <font-awesome-icon icon="fa-ellipsis-vertical"></font-awesome-icon>
-    icon
     <div class="article d-flex flex-row align-center"
         v-for="article in articles" :key="article.id"
     >
-      <div>{{article.title}}</div>
-      <v-spacer/>
-
 <!--      <v-menu >-->
 <!--        <template class="ico" v-slot:activator="{on, attrs}">-->
 <!--          <fa-icon icon="fa-solid fa-ellipsis-vertical"-->
@@ -29,19 +19,46 @@
 <!--          </v-list-item>-->
 <!--        </v-list>-->
 <!--      </v-menu>-->
+      <div class="ico d-flex">
+        <v-speed-dial
+            bottom
+            left
+            direction="right"
+        >
+          <template v-slot:activator>
+            <v-icon>fa-ellipsis-vertical</v-icon>
+          </template>
+          <v-btn
+              fab
+              dark
+              small
+              v-for="(item, index) in ops" :key="index"
+          >
+            <v-icon class="ops" >{{item.icon}}</v-icon>
+          </v-btn>
+        </v-speed-dial>
+      </div>
 
-      <v-speed-dial
-          bottom
-          right
-          direction="left"
-      >
-        <template v-slot:activator>
-          <v-icon>mdi-account-circle</v-icon>
-        </template>
-        <v-btn color="red">RD</v-btn>
-        <v-btn color="blue">BL</v-btn>
-      </v-speed-dial>
+      <v-spacer/>
+
+      <div>{{article.title}}</div>
     </div>
+
+    <div class="bottom-bar">
+      <v-fab-transition>
+        <v-btn
+            class="add"
+            color="grey darken-3"
+            dark
+            bottom
+            left
+            fab
+        >
+          <v-icon>fa-plus</v-icon>
+        </v-btn>
+      </v-fab-transition>
+    </div>
+
   </div>
 </template>
 
@@ -52,7 +69,7 @@ export default {
   data() {
     return {
       articles: [],
-      ops: [{op: 'edit', icon: 'fa-solid fa-square-pen'}, {op: 'delete', icon: 'fa-solid fa-trash-can'}]
+      ops: [{op: 'edit', icon: 'fa-pen'}, {op: 'delete', icon: 'fa-trash-can'}]
     }
   },
   methods: {
@@ -75,7 +92,37 @@ export default {
   border-bottom: 1px solid #eeeeee;
 }
 .ico {
-  text-align: right;
+  text-align: left;
   width: 2em;
+}
+.ico > .v-speed-dial--bottom {
+  bottom: 0;
+}
+.ops {
+  /*margin: 0 .5em;*/
+}
+.add {
+  margin-bottom: 3em;
+}
+.bottom-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 50px;
+  width: 100%;
+
+  border: 1px solid #eee;
+  box-sizing: border-box;
+
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 888;
+
+  font-size: 1.2em;
+  color: white;
+  /*background: linear-gradient(*/
+  /*    315deg,#498ff2 0%,#4965f2 100%);*/
 }
 </style>
