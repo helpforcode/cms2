@@ -53,6 +53,7 @@
             bottom
             left
             fab
+            :to="{name: 'ArticleAdd'}"
         >
           <v-icon>fa-plus</v-icon>
         </v-btn>
