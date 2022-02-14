@@ -6,6 +6,10 @@ import VueStorage from "vue-ls";
 import store from './store'
 import config from '@/defaultSettings'
 import vuetify from './plugins/vuetify'
+import NutUI from '@nutui/nutui'
+import '@nutui/nutui/dist/nutui.css'
+
+NutUI.install(Vue)
 
 Vue.config.productionTip = false
 
