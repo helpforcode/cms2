@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import axios from "axios";
+import toast from '@nutui/nutui/dist/packages/toast'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -35,6 +36,7 @@ _axios.interceptors.response.use(
   },
   function(error) {
     // Do something with response error
+    toast.fail(error.response.data.message)
     return Promise.reject(error);
   }
 );
