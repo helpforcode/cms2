@@ -62,6 +62,9 @@ export default {
         publishedAt: this.publishedAt,
       }).then(response => {
         console.log(response)
+        if (response.status === 200) {
+          this.$router.push({name: 'Article'})
+        }
       }).catch(error => {
         console.log(error)
       })

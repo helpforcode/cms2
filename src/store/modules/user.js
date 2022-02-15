@@ -1,6 +1,6 @@
-import Vue from 'vue'
 import {login} from "@/api/login";
 import {ACCESS_TOKEN} from '@/store/constants'
+import ls from '@/storage'
 
 export default {
     state: {
@@ -19,8 +19,7 @@ export default {
                     if (response.status === 200 && response.data.code === 200) {
                         const token = response.data.data
                         // ls.set(ACCESS_TOKEN, token, 7 * 24 * 60 * 60 * 1000)
-                        console.log(Vue.ls)
-                        Vue.ls.set(ACCESS_TOKEN, token, 2 * 60 * 1000) // 2min
+                        ls.set(ACCESS_TOKEN, token, 2 * 60 * 1000) // 2min
 
                         commit('SET_TOKEN', token)
                         resolve(response)
@@ -35,7 +34,7 @@ export default {
         },
         logoutAction({commit}) {
             return new Promise((resolve => {
-                Vue.ls.remove(ACCESS_TOKEN)
+                ls.remove(ACCESS_TOKEN)
                 commit('SET_TOKEN', '')
                 resolve()
             }))
@@ -43,7 +42,7 @@ export default {
     },
     getters: {
         userToken: () => {
-            return Vue.ls.get(ACCESS_TOKEN)
+            return ls.get(ACCESS_TOKEN)
         }
     }
 }
