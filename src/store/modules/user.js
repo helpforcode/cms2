@@ -19,7 +19,7 @@ export default {
                     if (response.status === 200 && response.data.code === 200) {
                         const token = response.data.data
                         // ls.set(ACCESS_TOKEN, token, 7 * 24 * 60 * 60 * 1000)
-                        ls.set(ACCESS_TOKEN, token, 2 * 60 * 1000) // 2min
+                        ls.set(ACCESS_TOKEN, token, 2 * 60 * 60 * 1000) // 2h
 
                         commit('SET_TOKEN', token)
                         resolve(response)

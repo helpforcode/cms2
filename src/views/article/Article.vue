@@ -69,17 +69,26 @@ export default {
   name: 'Article',
   data() {
     return {
+      pageParams: {page: 0, size: 10, hasMore: false},
       articles: [],
       ops: [{op: 'edit', icon: 'fa-pen'}, {op: 'delete', icon: 'fa-trash-can'}]
     }
   },
   methods: {
-
+    nextPage(curPage) {
+      this.pageParams.page = curPage + 1;
+      this.pageParams.size = Number(this.$route.query.size || this.pageParams.size)
+      article.articles(this.pageParams).then(response => {
+        let data = response.data.data
+        let pageInfo = data.pageInfo
+        this.articles = data.content
+        this.pageParams.hasMore = curPage < pageInfo.totalPages
+      })
+    }
   },
   mounted() {
-    article.articles().then(response => {
-      this.articles = response.data.data.content
-    })
+    let curPage = Number(this.$route.query.page || this.pageParams.page) - 1
+    this.nextPage(curPage)
   }
 }
 </script>
