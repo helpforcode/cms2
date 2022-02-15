@@ -3,6 +3,7 @@
     <div class="d-flex flex-column justify-center">
       <v-text-field v-model="username" label="NAME" placeholder="username" @keyup.enter="login" />
       <v-text-field v-model="password" label="PASSWORD" placeholder="password" @keyup.enter="login" />
+      <v-btn @click="login">OK</v-btn>
       <div class="bottom-bar" @click="login">
         <div>LOG IN</div>
       </div>

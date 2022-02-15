@@ -1,48 +1,57 @@
 <template>
   <div class="articles d-flex flex-column">
-    <div class="article d-flex flex-row align-center"
-        v-for="article in articles" :key="article.id"
+    <nut-infiniteloading
+        @loadmore="nextPage()"
+        :is-show-mod="true"
+        :has-more="pageParams.hasMore"
+        :is-loading="loading"
+        :threshold="200"
+        :use-window="false"
     >
-<!--      <v-menu >-->
-<!--        <template class="ico" v-slot:activator="{on, attrs}">-->
-<!--          <fa-icon icon="fa-solid fa-ellipsis-vertical"-->
-<!--                   v-bind="attrs"-->
-<!--                   v-on="on"-->
-<!--          />-->
-<!--        </template>-->
+      <div class="article d-flex flex-row align-center"
+           v-for="article in articles" :key="article.id"
+      >
+        <!--      <v-menu >-->
+        <!--        <template class="ico" v-slot:activator="{on, attrs}">-->
+        <!--          <fa-icon icon="fa-solid fa-ellipsis-vertical"-->
+        <!--                   v-bind="attrs"-->
+        <!--                   v-on="on"-->
+        <!--          />-->
+        <!--        </template>-->
 
-<!--        <v-list>-->
-<!--          <v-list-item v-for="(item, index) in ops" :key="index">-->
-<!--            <v-list-item-title>-->
-<!--              {{item.op}}-->
-<!--            </v-list-item-title>-->
-<!--          </v-list-item>-->
-<!--        </v-list>-->
-<!--      </v-menu>-->
-      <div class="ico d-flex">
-        <v-speed-dial
-            bottom
-            left
-            direction="right"
-        >
-          <template v-slot:activator>
-            <v-icon>fa-ellipsis-vertical</v-icon>
-          </template>
-          <v-btn
-              fab
-              dark
-              small
-              v-for="(item, index) in ops" :key="index"
+        <!--        <v-list>-->
+        <!--          <v-list-item v-for="(item, index) in ops" :key="index">-->
+        <!--            <v-list-item-title>-->
+        <!--              {{item.op}}-->
+        <!--            </v-list-item-title>-->
+        <!--          </v-list-item>-->
+        <!--        </v-list>-->
+        <!--      </v-menu>-->
+        <div class="ico d-flex">
+          <v-speed-dial
+              bottom
+              left
+              direction="right"
           >
-            <v-icon class="ops" >{{item.icon}}</v-icon>
-          </v-btn>
-        </v-speed-dial>
+            <template v-slot:activator>
+              <v-icon>fa-ellipsis-vertical</v-icon>
+            </template>
+            <v-btn
+                fab
+                dark
+                small
+                v-for="(item, index) in ops" :key="index"
+            >
+              <v-icon class="ops" >{{item.icon}}</v-icon>
+            </v-btn>
+          </v-speed-dial>
+        </div>
+
+        <v-spacer/>
+
+        <div>{{article.title}}</div>
       </div>
-
-      <v-spacer/>
-
-      <div>{{article.title}}</div>
-    </div>
+    </nut-infiniteloading>
 
     <div class="bottom-bar">
       <v-fab-transition>
@@ -69,26 +78,36 @@ export default {
   name: 'Article',
   data() {
     return {
-      pageParams: {page: 0, size: 10, hasMore: false},
+      loading: false,
+      pageParams: {page: 0, size: 15, hasMore: false},
       articles: [],
-      ops: [{op: 'edit', icon: 'fa-pen'}, {op: 'delete', icon: 'fa-trash-can'}]
+      ops: [{op: 'edit', icon: 'fa-pen'}, {op: 'delete', icon: 'fa-trash-can'}],
+      timer: null,
     }
   },
   methods: {
     nextPage(curPage) {
-      this.pageParams.page = curPage + 1;
-      this.pageParams.size = Number(this.$route.query.size || this.pageParams.size)
-      article.articles(this.pageParams).then(response => {
-        let data = response.data.data
-        let pageInfo = data.pageInfo
-        this.articles = data.content
-        this.pageParams.hasMore = curPage < pageInfo.totalPages
-      })
+      this.loading = true
+      this.timer = setTimeout(() => {
+        curPage = curPage || this.pageParams.page
+        this.pageParams.page = curPage + 1;
+        this.pageParams.size = Number(this.$route.query.size || this.pageParams.size)
+        article.articles(this.pageParams).then(response => {
+          let data = response.data.data
+          let pageInfo = data.pageInfo
+          this.articles = data.content
+          this.pageParams.hasMore = curPage < pageInfo.totalPages
+        })
+        this.loading = false
+      }, 100)
     }
   },
   mounted() {
     let curPage = Number(this.$route.query.page || this.pageParams.page) - 1
     this.nextPage(curPage)
+  },
+  destroyed() {
+    clearTimeout(this.timer)
   }
 }
 </script>
