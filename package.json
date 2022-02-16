@@ -15,6 +15,7 @@
     "@nutui/nutui": "^2.3.7",
     "core-js": "^3.6.5",
     "scss-loader": "^0.0.1",
+    "vant": "^2.12.44",
     "vue": "^2.6.11",
     "vue-ls": "^4.1.0",
     "vue-quill-editor": "^3.0.6",
