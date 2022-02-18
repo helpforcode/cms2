@@ -18,7 +18,7 @@
           @choose="publishedAtSelected"
       >
       </nut-datepicker>
-      <v-btn color="success" @click="articleAdd">Submit</v-btn>
+      <v-btn color="success" @click="articleSubmit">Submit</v-btn>
     </v-form>
   </div>
 </template>
@@ -27,7 +27,7 @@
 import Vue from 'vue'
 import VueQuillEditor from 'vue-quill-editor'
 import {categories} from '@/api/category'
-import {add as ArticleAdd, article} from '@/api/article'
+import {add as ArticleAdd, update as ArticleUpdate, article} from '@/api/article'
 
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -56,20 +56,25 @@ export default {
     }
   },
   methods: {
-    articleAdd() {
-      ArticleAdd({
+    articleSubmit() {
+      let params = {
         categoryId: this.categoryId,
         title: this.title,
         content: this.content,
         publishedAt: this.publishedAt,
-      }).then(response => {
+      }
+      let resolve = response => {
         console.log(response)
         if (response.status === 200) {
           this.$router.push({name: 'Article'})
         }
-      }).catch(error => {
+      }
+      let reject = error => {
         console.log(error)
-      })
+      }
+      this.articleId === 0
+          ? ArticleAdd(params).then(resolve).catch(reject)
+          : ArticleUpdate(params).then(resolve).catch(reject)
     },
     publishedAtSelected(d) {
       this.form.publishedAt = d[5]
