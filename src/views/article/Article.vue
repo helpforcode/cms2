@@ -24,6 +24,7 @@
                     dark
                     small
                     v-for="(item, index) in ops" :key="index"
+                    :to="{name: item.routeName, params: {id:article.id}}"
                 >
                   <v-icon class="ops" >{{item.icon}}</v-icon>
                 </v-btn>
@@ -42,7 +43,7 @@
             bottom
             left
             fab
-            :to="{name: 'ArticleAdd'}"
+            :to="{name: 'ArticleForm', params: {id: 0}}"
         >
           <v-icon>fa-plus</v-icon>
         </v-btn>
@@ -62,7 +63,7 @@ export default {
       loading: false,
       pageParams: {page: 0, size: 10},
       articles: [],
-      ops: [{op: 'edit', icon: 'fa-pen'}, {op: 'delete', icon: 'fa-trash-can'}],
+      ops: [{op: 'edit', icon: 'fa-pen', routeName:'ArticleForm'}, {op: 'delete', icon: 'fa-trash-can'}],
       timer: null,
     }
   },

@@ -3,11 +3,10 @@
   <div class="article-form">
 
     <v-form>
-      <v-select v-model="categoryId" :items="cates" :item-text="'name'" :item-value="'id'" label="Category"></v-select>
-      <v-text-field v-model="title" label="Title"></v-text-field>
-      <v-text-field v-model="content" label="Content"></v-text-field>
-      <quill-editor v-model="content"></quill-editor>
-      <v-text-field v-model="publishedAt" label="PublishedAt" @focus="toggleDatepicker(true)"></v-text-field>
+      <v-select v-model="form.categoryId" :items="cates" :item-text="'name'" :item-value="'id'" label="Category"></v-select>
+      <v-text-field v-model="form.title" label="Title"></v-text-field>
+      <quill-editor v-model="form.content"></quill-editor>
+      <v-text-field v-model="form.publishedAt" label="PublishedAt" @focus="toggleDatepicker(true)"></v-text-field>
       <nut-datepicker
           :is-visible="dataPickerVisible"
           title="请选择日期时间"
@@ -28,7 +27,7 @@
 import Vue from 'vue'
 import VueQuillEditor from 'vue-quill-editor'
 import {categories} from '@/api/category'
-import {add as ArticleAdd} from '@/api/article'
+import {add as ArticleAdd, article} from '@/api/article'
 
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -45,12 +44,15 @@ export default {
   name: 'ArticleForm',
   data() {
     return {
+      articleId: 0,
+      form: {
+        categoryId: 0,
+        title: '',
+        content: '',
+        publishedAt: '',
+      },
       dataPickerVisible: false,
       cates: [],
-      categoryId: 0,
-      title: '',
-      content: '',
-      publishedAt: '',
     }
   },
   methods: {
@@ -70,13 +72,22 @@ export default {
       })
     },
     publishedAtSelected(d) {
-      this.publishedAt = d[5]
+      this.form.publishedAt = d[5]
     },
     toggleDatepicker(show) {
       this.dataPickerVisible = show
     }
   },
   mounted() {
+    this.articleId = Number(this.$route.params.id)
+    if (this.articleId !== 0) {
+      article(this.articleId).then(response => {
+        let data = response.data.data
+        this.form = {
+          ...data
+        }
+      })
+    }
     categories().then(response => {
       this.cates = response.data.data.content
     }).catch(err => {

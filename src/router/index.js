@@ -26,8 +26,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/article/Article.vue')
   },
   {
-    path: '/article/add',
-    name: 'ArticleAdd',
+    path: '/article/:id(\\d+)',
+    name: 'ArticleForm',
     component: ArticleForm
   },
 ]
