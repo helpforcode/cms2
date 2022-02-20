@@ -58,10 +58,10 @@ export default {
   methods: {
     articleSubmit() {
       let params = {
-        categoryId: this.categoryId,
-        title: this.title,
-        content: this.content,
-        publishedAt: this.publishedAt,
+        categoryId: this.form.categoryId,
+        title: this.form.title,
+        content: this.form.content,
+        publishedAt: this.form.publishedAt,
       }
       let resolve = response => {
         console.log(response)

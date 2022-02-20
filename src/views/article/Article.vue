@@ -7,7 +7,8 @@
         :finished-text="'No more data'"
     >
       <van-cell
-          v-for="article in articles" :key="article.id" :value="article.title">
+          v-for="article in articles" :key="article.id" :value="article.title"
+      >
           <template #title>
 <!--            <van-icon class-prefix="fa" name="ellipsis"></van-icon>-->
             <div class="ico d-flex">
