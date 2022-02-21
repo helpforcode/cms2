@@ -8,6 +8,7 @@
     >
       <van-cell
           v-for="article in articles" :key="article.id" :value="article.title"
+          :to="{name: 'ArticleDetail', params:{id: article.id}}"
       >
           <template #title>
 <!--            <van-icon class-prefix="fa" name="ellipsis"></van-icon>-->
@@ -81,7 +82,7 @@ export default {
           this.loading = false
           this.finished = curPage >= pageInfo.totalPages
         })
-      }, 1000)
+      }, 100)
     }
   },
   mounted() {

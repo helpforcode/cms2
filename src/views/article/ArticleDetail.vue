@@ -3,6 +3,9 @@
 
   <div>
 
+    <van-cell :value="article.title"></van-cell>
+    <van-cell :value="article.content"></van-cell>
+    <van-cell :value="article.publishedAt"></van-cell>
   </div>
 </template>
 
@@ -13,12 +16,21 @@ export default {
   data() {
     return {
       articleId: 0,
+      article: {
+        id: 0,
+        categoryId: 0,
+        title: '',
+        content: '',
+        images: '',
+        link: '',
+        publishedAt: '',
+      }
     }
   },
   mounted() {
     this.articleId = Number(this.$route.params.id)
     article(this.articleId).then(response => {
-      console.log(response)
+      this.article = response.data.data
     })
   }
 }

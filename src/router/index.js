@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import ArticleForm from '../views/article/ArticleForm.vue'
+import ArticleDetail from '../views/article/ArticleDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ const routes = [
     path: '/article/:id(\\d+)',
     name: 'ArticleForm',
     component: ArticleForm
+  },
+  {
+    path: '/article-detail/:id(\\d+)',
+    name: 'ArticleDetail',
+    component: ArticleDetail
   },
 ]
 
