@@ -4,7 +4,7 @@
   <div>
 
     <van-cell :value="article.title"></van-cell>
-    <van-cell :value="article.content"></van-cell>
+    <div v-html="article.content"></div>
     <van-cell :value="article.publishedAt"></van-cell>
   </div>
 </template>
