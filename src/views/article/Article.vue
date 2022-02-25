@@ -6,34 +6,38 @@
         @load="nextPage()"
         :finished-text="'No more data'"
     >
-      <van-cell
-          v-for="article in articles" :key="article.id" :value="article.title"
+      <van-row
+          class="article-row"
+          v-for="article in articles" :key="article.id"
           :to="{name: 'ArticleDetail', params:{id: article.id}}"
       >
-          <template #title>
-<!--            <van-icon class-prefix="fa" name="ellipsis"></van-icon>-->
-            <div class="ico d-flex">
-              <v-speed-dial
-                  bottom
-                  left
-                  direction="right"
+        <van-col span="8">
+          <div class="ico d-flex">
+            <v-speed-dial
+                bottom
+                left
+                direction="right"
+            >
+              <template v-slot:activator>
+                <v-icon>fa-ellipsis</v-icon>
+              </template>
+              <v-btn
+                  fab
+                  dark
+                  small
+                  v-for="(item, index) in ops" :key="index"
+                  :to="{name: item.routeName, params: {id:article.id}}"
               >
-                <template v-slot:activator>
-                  <v-icon>fa-ellipsis</v-icon>
-                </template>
-                <v-btn
-                    fab
-                    dark
-                    small
-                    v-for="(item, index) in ops" :key="index"
-                    :to="{name: item.routeName, params: {id:article.id}}"
-                >
-                  <v-icon class="ops" >{{item.icon}}</v-icon>
-                </v-btn>
-              </v-speed-dial>
-            </div>
-          </template>
-      </van-cell>
+                <v-icon class="ops" >{{item.icon}}</v-icon>
+              </v-btn>
+            </v-speed-dial>
+          </div>
+        </van-col>
+        <van-col span="16" class="van-ellipsis">
+          <router-link :to="{name: 'ArticleDetail', params:{id: article.id}}">{{article.title}}</router-link>
+        </van-col>
+        <div class="van-hairline--bottom"></div>
+      </van-row>
     </van-list>
 
     <div class="bottom-bar">

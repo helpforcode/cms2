@@ -58,6 +58,7 @@ export default {
   methods: {
     articleSubmit() {
       let params = {
+        id: this.articleId,
         categoryId: this.form.categoryId,
         title: this.form.title,
         content: this.form.content,

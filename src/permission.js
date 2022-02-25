@@ -17,6 +17,8 @@ router.beforeEach((to, from, next) => {
             next({ name: 'Login', query: { redirect: to.fullPath } })
         }
     } else {
+
+        // todo: identify token
         console.log("Got token from storage:", token)
         console.log("to:", to)
         console.log("from:", from)
