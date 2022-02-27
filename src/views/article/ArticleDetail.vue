@@ -1,10 +1,10 @@
 
 <template>
 
-  <div>
+  <div class="article">
 
     <van-cell :value="article.title"></van-cell>
-    <div v-html="article.content"></div>
+    <div class="article-content" v-html="article.content"></div>
     <van-cell :value="article.publishedAt"></van-cell>
   </div>
 </template>
@@ -35,3 +35,12 @@ export default {
   }
 }
 </script>
+
+<style >
+.article {
+  padding: 1em;
+}
+.article-content img {
+  max-width: 100%;
+}
+</style>
