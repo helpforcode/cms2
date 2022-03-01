@@ -3,6 +3,7 @@
     <van-uploader
         :after-read="afterRead"
         v-model="fileList"
+        :before-delete="remove"
     ></van-uploader>
   </div>
 </template>
@@ -10,6 +11,7 @@
 <script>
 
 import Img from '@/api/image'
+import toast from '@nutui/nutui/dist/packages/toast'
 
 export default {
   name: "File",
@@ -18,7 +20,18 @@ export default {
       fileList: []
     }
   },
+  mounted() {
+    this.listImage()
+  },
   methods: {
+    listImage() {
+      Img.list().then(response => {
+        this.fileList = response.data.data.content
+
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     afterRead(file) {
       console.log(file)
       let that = this
@@ -38,6 +51,15 @@ export default {
           console.log(err)
         })
       }
+    },
+    remove(file) {
+      Img.remove(file.id).then(response => {
+        console.log(response)
+        toast.success("Image removed.")
+        this.listImage()
+      }).catch(err => {
+        console.log(err)
+      })
     },
     dataURLtoBlob(dataurl) {
       var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
