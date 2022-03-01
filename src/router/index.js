@@ -5,7 +5,7 @@ import Login from '../views/Login.vue'
 import ArticleForm from '../views/article/ArticleForm.vue'
 import ArticleDetail from '../views/article/ArticleDetail.vue'
 import File from '../views/File'
-import Image from '../views/Image'
+import Photo from '../views/Photo'
 
 Vue.use(VueRouter)
 
@@ -45,8 +45,8 @@ const routes = [
   },
   {
     path: '/image',
-    name: 'Image',
-    component: Image
+    name: 'Photo',
+    component: Photo
   },
 ]
 

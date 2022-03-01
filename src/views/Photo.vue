@@ -1,9 +1,8 @@
 <template>
   <div>
-
     <div class="box-x">
       <div class="box-x-item"
-           v-for="(photo, i) in checkedImages"
+           v-for="(photo, i) in imagesChecked"
            v-bind:key="photo.id"
       >
         <van-image fit="cover" width="100%" height="100%"
@@ -56,11 +55,18 @@
 import Img from '@/api/image'
 import {ImagePreview} from 'vant'
 export default {
- name: "Photo",
+  name: "Photo",
+  props: {
+    checkedImages: Array
+  },
+  model: {
+    prop: 'checkedImages',
+    event: 'change',
+  },
   data() {
     return {
       images: [],
-      checkedImages: [],
+      imagesChecked: this.checkedImages,
       popup: false,
     }
   },
@@ -88,12 +94,14 @@ export default {
       this.popup = true
     },
     confirm() {
-      this.checkedImages = this.images.filter(img => img.checked)
+      this.imagesChecked = this.images.filter(img => img.checked)
+      this.$emit('change', this.imagesChecked)
       this.popup = false
     },
     removeChecked(i, image) {
       console.log(image)
-      this.checkedImages.splice(i, 1);
+      this.imagesChecked.splice(i, 1);
+      this.$emit('change', this.imagesChecked)
     }
   }
 }

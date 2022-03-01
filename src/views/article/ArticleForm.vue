@@ -7,6 +7,9 @@
       <v-text-field v-model="form.title" label="Title"></v-text-field>
       <quill-editor v-model="form.content"></quill-editor>
       <v-text-field v-model="form.publishedAt" label="PublishedAt" @focus="toggleDatepicker(true)"></v-text-field>
+
+      <Photo v-model="selectedImages" @change="imageSelectedChange"></Photo>
+
       <nut-datepicker
           :is-visible="dataPickerVisible"
           title="请选择日期时间"
@@ -28,6 +31,7 @@ import Vue from 'vue'
 import VueQuillEditor from 'vue-quill-editor'
 import {categories} from '@/api/category'
 import {add as ArticleAdd, update as ArticleUpdate, article} from '@/api/article'
+import Photo from '@/views/Photo'
 
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -42,6 +46,9 @@ Vue.use(VueQuillEditor, {
 
 export default {
   name: 'ArticleForm',
+  components: {
+    Photo
+  },
   data() {
     return {
       articleId: 0,
@@ -53,6 +60,7 @@ export default {
       },
       dataPickerVisible: false,
       cates: [],
+      selectedImages: [],
     }
   },
   methods: {
@@ -63,6 +71,7 @@ export default {
         title: this.form.title,
         content: this.form.content,
         publishedAt: this.form.publishedAt,
+        images: this.selectedImages.map(img => img.relativeUrl)
       }
       let resolve = response => {
         console.log(response)
@@ -82,6 +91,11 @@ export default {
     },
     toggleDatepicker(show) {
       this.dataPickerVisible = show
+    },
+    imageSelectedChange(images) {
+      console.log('selected:', images)
+      console.log(this.selectedImages)
+      console.log(this.selectedImages.map(img => img.url))
     }
   },
   mounted() {

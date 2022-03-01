@@ -6,6 +6,9 @@
     <van-cell :value="article.title"></van-cell>
     <div class="article-content" v-html="article.content"></div>
     <van-cell :value="article.publishedAt"></van-cell>
+    <div v-for="url in article.images" v-bind:key="url">
+      <van-image width="5em" height="5em" :src="url"></van-image>
+    </div>
   </div>
 </template>
 
