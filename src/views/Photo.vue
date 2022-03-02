@@ -23,7 +23,9 @@
     <van-popup v-model="popup" position="bottom" :style="{height: '40%'}">
       <div class="box-container">
         <div class="box">
-          <van-divider dashed class="divider" content-position="center">Select images</van-divider>
+          <van-divider dashed class="divider" content-position="center">
+            <router-link :to="{name: 'File'}">Go to add</router-link>
+          </van-divider>
           <div class="item"
                v-for="(photo, i) in images"
                v-bind:key="photo.id"

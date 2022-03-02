@@ -5,6 +5,9 @@
         v-model="fileList"
         :before-delete="remove"
     ></van-uploader>
+    <BottomBtn :button-click="goBack">
+      <div>GO BACK</div>
+    </BottomBtn>
   </div>
 </template>
 
@@ -12,9 +15,13 @@
 
 import Img from '@/api/image'
 import toast from '@nutui/nutui/dist/packages/toast'
+import BottomBtn from "@/components/BottomBtn";
 
 export default {
   name: "File",
+  components: {
+    BottomBtn
+  },
   data() {
     return {
       fileList: []
@@ -80,6 +87,9 @@ export default {
       ctx.drawImage(img, 0, 0, w, h)
       url = canvas.toDataURL('image/png', 1)//1代表精细度，越高越好
       return url
+    },
+    goBack() {
+      this.$router.back()
     }
   }
 }

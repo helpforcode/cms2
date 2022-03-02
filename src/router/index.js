@@ -16,12 +16,12 @@ const routes = [
     component: Home
   },
   {
-    path: '/login',
+    path: '/admin/login',
     name: 'Login',
     component: Login
   },
   {
-    path: '/article',
+    path: '/admin/article',
     name: 'Article',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -29,22 +29,22 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/article/Article.vue')
   },
   {
-    path: '/article/:id(\\d+)',
+    path: '/admin/article/:id(\\d+)',
     name: 'ArticleForm',
     component: ArticleForm
   },
   {
-    path: '/article-detail/:id(\\d+)',
+    path: '/admin/article-detail/:id(\\d+)',
     name: 'ArticleDetail',
     component: ArticleDetail
   },
   {
-    path: '/file',
+    path: '/admin/file',
     name: 'File',
     component: File
   },
   {
-    path: '/image',
+    path: '/admin/image',
     name: 'Photo',
     component: Photo
   },
