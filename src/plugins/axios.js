@@ -12,7 +12,7 @@ import ls from '@/storage'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
-  baseURL: process.env.baseURL || process.env.VUE_APP_API_BASE_URL || ""
+  baseURL: process.env.baseURL || process.env.VUE_APP_BASE_URL || ""
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };

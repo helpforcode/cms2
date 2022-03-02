@@ -14,5 +14,18 @@ module.exports = {
                 `,
       }
     },
+  },
+  devServer: {
+    // host: 'localhost',
+    // port: 8080,
+    proxy: {
+      '/api': {
+        target: process.env.VUE_APP_API_BASE_URL,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
   }
 }
