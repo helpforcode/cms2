@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       images: [],
+      imagesCache: [],
       imagesChecked: this.checkedImages,
       popup: false,
     }
@@ -78,6 +79,7 @@ export default {
       Img.list().then(response => {
         console.log(response)
         this.images = response.data.data.content
+        this.imagesCache = this.images
       }).catch(err => {
         console.log(err)
       })
@@ -90,7 +92,7 @@ export default {
       this.$set(this.images, i, image)
     },
     showPopup() {
-      this.listImage()
+      this.images = JSON.parse(JSON.stringify(this.imagesCache))
       this.popup = true
     },
     confirm() {
