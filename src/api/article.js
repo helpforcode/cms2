@@ -9,10 +9,14 @@ export function article(id) {
 export function add(params) {
     return Vue.axios.post('/admin/article', params)
 }
+export function remove(id) {
+    return Vue.axios.delete('/admin/article/'+id)
+}
 export function update(params) {
     return Vue.axios.put('/admin/article/'+params.id, params)
 }
 
 export default {
     articles
+    , remove
 }

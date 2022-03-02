@@ -26,14 +26,16 @@
                   dark
                   small
                   v-for="(item, index) in ops" :key="index"
-                  :to="{name: item.routeName, params: {id:article.id}}"
+                  @click="operation(item, article.id, index)"
               >
                 <v-icon class="ops" >{{item.icon}}</v-icon>
               </v-btn>
             </v-speed-dial>
           </div>
         </van-col>
-        <van-col span="16" class="van-ellipsis">
+        <van-col span="16"
+                 v-bind:class="{inactive: !article.display}"
+                 class="van-ellipsis">
           <router-link :to="{name: 'ArticleDetail', params:{id: article.id}}">{{article.title}}</router-link>
         </van-col>
         <div class="van-hairline--bottom"></div>
@@ -87,6 +89,18 @@ export default {
           this.finished = curPage >= pageInfo.totalPages
         })
       }, 100)
+    },
+    operation(item, articleId, index) {
+      if (item.op === 'edit') {
+        this.$router.push({name: item.routeName, params:{id: articleId}})
+      } else if (item.op === 'delete') {
+        article.remove(articleId).then(response => {
+          console.log(response)
+          if (response.data.code === 200) {
+            this.articles[index].display = false
+          }
+        })
+      }
     }
   },
   mounted() {
@@ -98,6 +112,9 @@ export default {
 </script>
 
 <style>
+.article-row .inactive a{
+  color: #a7a7a7;
+}
 .articles {
   padding: 3em;
 }
