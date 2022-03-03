@@ -6,6 +6,9 @@ import ArticleForm from '../views/article/ArticleForm.vue'
 import ArticleDetail from '../views/article/ArticleDetail.vue'
 import File from '../views/File'
 import Photo from '../views/Photo'
+import Words from '../views/word/Words'
+import WordForm from '../views/word/WordForm'
+import Test from '../views/Test'
 
 Vue.use(VueRouter)
 
@@ -47,6 +50,21 @@ const routes = [
     path: '/admin/image',
     name: 'Photo',
     component: Photo
+  },
+  {
+    path: '/admin/word',
+    name: 'Words',
+    component: Words
+  },
+  {
+    path: '/admin/word/:id(\\d+)',
+    name: 'WordForm',
+    component: WordForm
+  },
+  {
+    path: '/admin/test',
+    name: 'Test',
+    component: Test
   },
 ]
 
