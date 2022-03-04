@@ -8,7 +8,7 @@ router.beforeEach((to, from, next) => {
     let token = ls.get(ACCESS_TOKEN)
     if (!token) {
         // todo: whitelist urls
-        if (to.path === '/login') {
+        if (to.name === 'Login') {
             // no token, login --> login
             next()
         } else {
@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
         console.log("to:", to)
         console.log("from:", from)
 
-        if (to.path === '/login') {
+        if (to.name === 'Login') {
             // has token, login-->home
             next({name: 'Article'})
         } else {
