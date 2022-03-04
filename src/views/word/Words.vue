@@ -12,36 +12,11 @@
           v-for="item in items" :key="item.id"
           :to="{name: 'WordDetail', params:{id: item.id}}"
       >
-
-        <!--  buttons  -->
-        <van-col span="8">
-          <div class="ico d-flex">
-            <v-speed-dial
-                bottom
-                left
-                direction="right"
-            >
-              <template v-slot:activator>
-                <v-icon>fa-ellipsis</v-icon>
-              </template>
-              <v-btn
-                  fab
-                  dark
-                  small
-                  v-for="(op, index) in ops" :key="index"
-                  @click="operation(op, item.id, index)"
-              >
-                <v-icon class="ops" >{{op.icon}}</v-icon>
-              </v-btn>
-            </v-speed-dial>
-          </div>
-        </van-col>
-
         <!--  title  -->
-        <van-col span="16"
+        <van-col span="24"
                  v-bind:class="{inactive: item.status === 0}"
                  class="van-ellipsis">
-          <router-link :to="{name: 'WordDetail', params:{id: item.id}}">
+          <router-link :to="{name: 'WordForm', params:{id: item.id}}">
             <span class="word-date">{{item.day}}</span>
             <span class="word-normal" v-for="w in item.words" v-bind:key="w.id">{{w.word}}-{{w.id}}</span>
             <span class="word-primary">{{item.primaryWord.word}}-{{item.primaryWord.id}}</span>
@@ -110,5 +85,8 @@ export default {
 
 .words {
   font-size: 12px;
+}
+.word-primary {
+  font-weight: bold;
 }
 </style>

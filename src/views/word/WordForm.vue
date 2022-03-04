@@ -1,20 +1,28 @@
 <template>
   <div>
-    {{this.form.day}}
-    <van-field
-        v-model="selectedWord1"
-        is-link
-        label="word1"
-        placeholder="choose word"
-        @click="wordsPopup"
-    >
-    </van-field>
+    <div @click="wordsPopup">
+      <span v-for="item in form.words" v-bind:key="item.id">
+        {{item.word}}
+      </span>
+    </div>
+    <div @click="showPrimaryPicker = true">
+      <span class="primary-word">{{form.primaryWord.word}}</span>
+    </div>
     <van-popup v-model="showPicker" position="bottom">
       <van-picker
-          :columns="wordsText"
+          show-toolbar
+          :columns="normalWords"
           @confirm="onWordSelected"
       />
     </van-popup>
+    <van-popup v-model="showPrimaryPicker" position="bottom">
+      <van-picker
+          show-toolbar
+          :columns="primaryWords"
+          @confirm="onPrimaryWordSelected"
+      />
+    </van-popup>
+
   </div>
 </template>
 
@@ -26,7 +34,9 @@ export default {
   data() {
     return {
       showPicker: false,
-      selectedWord1: '',
+      showPrimaryPicker: false,
+      normalWords: [],
+      primaryWords: {},
       words: [],
       wordsText: [],
       wordId: Number,
@@ -45,26 +55,59 @@ export default {
   },
   mounted() {
     this.wordId = Number(this.$route.params.id)
-    if (this.wordId !== 0) {
-      word.dailyWord(this.wordId).then(response => {
-        let data = response.data.data
-        this.form = {
-          ...data
-        }
-        this.selectedWord1 = data.words[0].word
-      })
-    }
+
     word.words().then(response => {
       this.words = response.data.data
       this.wordsText = this.words.map(w => w.word)
-      console.log(this.wordsText)
+
+      if (this.wordId !== 0) {
+        word.dailyWord(this.wordId).then(response => {
+          let wordDaily = response.data.data
+          this.form = {
+            ...wordDaily
+          }
+          wordDaily.words.forEach((wd, i) => {
+            this.normalWords[i] = {
+              values: this.wordsText,
+              defaultIndex: this.getIndexOfWord(wd)
+            }
+          })
+          this.primaryWords = [{
+            values: this.wordsText,
+            defaultIndex: this.getIndexOfWord(wordDaily.primaryWord)
+          }]
+        })
+      }
     }).catch(err => {
       console.log(err)
     })
+
   },
   methods: {
-    onWordSelected(value, index) {
-      console.log(value, index)
+    getIndexOfWord(inputWord) {
+      let index = 0
+      this.words.forEach((word, i) => {
+        if (word.id === inputWord.id) {
+          index = i
+        }
+      })
+      return index
+    },
+    onWordSelected(curValues, curIndexes) {
+      // console.log(curValues)
+      // console.log(curIndexes)
+      curIndexes.forEach((index,i) => {
+        // console.log("sel:",this.words[index], i)
+        this.form.words[i] = this.words[index]
+      })
+      this.showPicker = false
+    },
+    onPrimaryWordSelected(curValues, curIndexes) {
+      console.log(curValues, curIndexes)
+      curIndexes.forEach((index) => {
+        this.form.primaryWord = this.words[index]
+      })
+      this.showPrimaryPicker = false
     },
     wordsPopup() {
       this.showPicker = true
@@ -75,4 +118,7 @@ export default {
 
 <style scoped>
 
+.primary-word {
+  font-weight: bold;
+}
 </style>

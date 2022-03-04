@@ -28,6 +28,7 @@ _axios.interceptors.request.use(
   function(error) {
     // Do something with request error
     toast.fail(error.response.data.message)
+    console.log(error.response)
     return Promise.reject(error);
   }
 );
