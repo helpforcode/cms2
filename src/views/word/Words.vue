@@ -15,7 +15,7 @@
         <!--  title  -->
         <van-col span="24"
                  v-bind:class="{inactive: item.status === 0}"
-                 class="van-ellipsis">
+                 class="title van-ellipsis">
           <router-link :to="{name: 'WordForm', params:{id: item.id}}">
             <span class="word-date">{{item.day}}</span>
             <span class="word-normal" v-for="w in item.words" v-bind:key="w.id">{{w.word}}-{{w.id}}</span>
@@ -27,18 +27,26 @@
       </van-row>
     </van-list>
 
+    <BottomBtn :button-click="toAdd">
+      <div>Add</div>
+    </BottomBtn>
+
   </div>
 </template>
 
 <script>
 import word from "@/api/word";
+import BottomBtn from "@/components/BottomBtn";
 export default {
   name: "Words",
+  components: {
+    BottomBtn
+  },
   data() {
     return {
       finished: false,
       loading: false,
-      pageParams: {page: 0, size: 10, sort: 'id,desc'},
+      pageParams: {page: 0, size: 10, sort: 'day,desc'},
       items: [],
       ops: [{op: 'edit', icon: 'fa-pen', routeName:'WordForm'}, {op: 'delete', icon: 'fa-trash-can'}],
       timer: null,
@@ -71,13 +79,16 @@ export default {
           }
         })
       }
+    },
+    toAdd() {
+      this.$router.push({name: 'WordForm', params: {id: 0}})
     }
   },
   mounted() {
   },
   destroyed() {
     clearTimeout(this.timer)
-  }
+  },
 }
 </script>
 
@@ -88,5 +99,9 @@ export default {
 }
 .word-primary {
   font-weight: bold;
+}
+.title span {
+  padding: 1em;
+  font-size: 12px;
 }
 </style>

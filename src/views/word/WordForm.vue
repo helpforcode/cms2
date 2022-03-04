@@ -1,45 +1,88 @@
 <template>
   <div>
-    <div @click="wordsPopup">
-      <span v-for="item in form.words" v-bind:key="item.id">
-        {{item.word}}
-      </span>
+    <div class="d-flex flex-column">
+      <div class="d-flex">
+        <div class="d-flex" @click="wordsPopup">
+            <span class="word" v-for="item in form.words" v-bind:key="item.id">
+              {{item.word}}
+            </span>
+        </div>
+        <div class="d-flex" @click="showPrimaryPicker = true">
+          <span class="word primary-word">{{form.primaryWord.word}}</span>
+        </div>
+        <van-popup v-model="showPicker" position="bottom">
+          <van-picker
+              show-toolbar
+              :columns="normalWords"
+              @confirm="onWordSelected"
+          />
+        </van-popup>
+        <van-popup v-model="showPrimaryPicker" position="bottom">
+          <van-picker
+              show-toolbar
+              :columns="primaryWords"
+              @confirm="onPrimaryWordSelected"
+          />
+        </van-popup>
+      </div>
+
+      <div class="d-flex">
+        <van-field
+            v-model="formatDate"
+            label="day"
+            @click="showDatePicker = true"
+        />
+      </div>
+
+      <div class="">
+        <van-popup v-model="showDatePicker" position="bottom">
+          <van-datetime-picker
+              v-model="theDate"
+              type="date"
+              :min-date="minDate"
+              :max-date="maxDate"
+              @confirm="dateSelected"
+          />
+        </van-popup>
+      </div>
     </div>
-    <div @click="showPrimaryPicker = true">
-      <span class="primary-word">{{form.primaryWord.word}}</span>
-    </div>
-    <van-popup v-model="showPicker" position="bottom">
-      <van-picker
-          show-toolbar
-          :columns="normalWords"
-          @confirm="onWordSelected"
-      />
-    </van-popup>
-    <van-popup v-model="showPrimaryPicker" position="bottom">
-      <van-picker
-          show-toolbar
-          :columns="primaryWords"
-          @confirm="onPrimaryWordSelected"
-      />
-    </van-popup>
+
+    <BottomBtn :button-click="save">
+      <div>Submit</div>
+    </BottomBtn>
 
   </div>
+
 </template>
 
 <script>
 import word from "@/api/word";
+import moment from "@/util/moment";
+import BottomBtn from "@/components/BottomBtn";
+
+const dateFormat = 'YYYY-MM-DD'
+const wordCapacity = 6
 
 export default {
   name: "WordForm",
+  components: {
+    BottomBtn
+  },
   data() {
     return {
+      edit: false,
       showPicker: false,
       showPrimaryPicker: false,
+      showDatePicker: false,
+      minDate: new Date(2020, 0, 1),
+      maxDate: new Date(2022, 10, 10),
+
       normalWords: [],
       primaryWords: {},
       words: [],
       wordsText: [],
       wordId: Number,
+      theDate: new Date(),
       form: {
         id: Number,
         primaryWord: {
@@ -47,36 +90,53 @@ export default {
           word: String
         },
         words: [],
-        publishedAt: String,
         day: String,
         status: Number,
       }
     }
   },
+  computed: {
+    formatDate: function(){
+      return moment(this.theDate).format(dateFormat)
+    }
+  },
   mounted() {
     this.wordId = Number(this.$route.params.id)
+    this.edit = Number.isInteger(this.wordId) && this.wordId > 0
 
     word.words().then(response => {
       this.words = response.data.data
       this.wordsText = this.words.map(w => w.word)
 
-      if (this.wordId !== 0) {
+      if (this.edit) {
         word.dailyWord(this.wordId).then(response => {
           let wordDaily = response.data.data
           this.form = {
             ...wordDaily
           }
-          wordDaily.words.forEach((wd, i) => {
+          this.theDate = moment(wordDaily.day, moment.HTML5_FMT.DATE).toDate()
+
+          for(let i = 0; i < wordCapacity; i++) {
+            let wd = i < wordDaily.words.length ? wordDaily.words[i] : {id:0};
             this.normalWords[i] = {
               values: this.wordsText,
               defaultIndex: this.getIndexOfWord(wd)
             }
-          })
+          }
+          // if words not enough, supplement
+          let wordsLen = this.form.words.length
+          if (wordsLen < wordCapacity) {
+            for (let i = 0; i < wordCapacity - wordsLen; i++) {
+              this.form.words[wordsLen+i] = {word: '-'}
+            }
+          }
           this.primaryWords = [{
             values: this.wordsText,
             defaultIndex: this.getIndexOfWord(wordDaily.primaryWord)
           }]
         })
+      } else {
+        this.initWords()
       }
     }).catch(err => {
       console.log(err)
@@ -84,6 +144,29 @@ export default {
 
   },
   methods: {
+    initWords() {
+      for (let i=0; i<wordCapacity; i++) {
+        this.normalWords[i] = {
+          values: this.wordsText,
+          defaultIndex: 0,
+        }
+        // init form for words
+        this.form.words[i] = {
+          word: '-'
+        }
+      }
+      this.primaryWords = [{
+        values: this.wordsText,
+        defaultIndex: 0
+      }]
+      // init form for primary word
+      this.form.primaryWord = {
+        word: '-'
+      }
+      // init day
+      this.form.day = moment(this.theDate).format(dateFormat)
+
+    },
     getIndexOfWord(inputWord) {
       let index = 0
       this.words.forEach((word, i) => {
@@ -111,6 +194,23 @@ export default {
     },
     wordsPopup() {
       this.showPicker = true
+    },
+    dateSelected(value) {
+      this.form.day = moment(value).format(dateFormat)
+      this.showDatePicker = false
+    },
+    save() {
+      let resolved = response => {
+        console.log(response)
+        if (response.status === 200) {
+          this.$router.push({name: 'Words'})
+        }
+      }
+      let reject = err => console.log(err)
+
+      this.edit
+          ? word.dailyUpdate(this.form).then(resolved).catch(reject)
+          : word.dailyAdd(this.form).then(resolved).catch(reject)
     }
   }
 }
@@ -120,5 +220,15 @@ export default {
 
 .primary-word {
   font-weight: bold;
+}
+.word {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #eeeeee;
+  border-radius: 25%;
+  width: 3em;
+  height: 3em;
+  padding: .2em;
 }
 </style>

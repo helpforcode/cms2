@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from '@nutui/nutui/dist/packages/toast'
 import {ACCESS_TOKEN} from '@/store/constants'
 import ls from '@/storage'
+import router from "@/router";
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -28,7 +29,9 @@ _axios.interceptors.request.use(
   function(error) {
     // Do something with request error
     toast.fail(error.response.data.message)
-    console.log(error.response)
+    if (error.code === 401) {
+      router.push({name: 'Login'})
+    }
     return Promise.reject(error);
   }
 );
