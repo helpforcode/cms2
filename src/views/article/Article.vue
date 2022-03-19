@@ -62,6 +62,8 @@
 </template>
 
 <script>
+// todo: category
+
 import article from "@/api/article"
 export default {
   name: 'Article',

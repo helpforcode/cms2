@@ -10,7 +10,10 @@ export function dailyWord(id) {
     return Vue.axios.get('/admin/daily-word/'+id)
 }
 export function dailyLatest() {
-    return Vue.axios.get('/admin/daily-word/latest')
+    return Vue.axios.get('/daily-word/latest')
+}
+export function dailyNext() {
+    return Vue.axios.get('/admin/daily-word/next')
 }
 export function dailyAdd(params) {
     return Vue.axios.post('/admin/daily-word', params)
@@ -24,6 +27,7 @@ export function dailyUpdate(params) {
 
 export default {
     dailyLatest
+    , dailyNext
     , words
     , dailyWords, dailyWord, dailyAdd, dailyRemove, dailyUpdate
 }

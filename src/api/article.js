@@ -3,6 +3,9 @@ import Vue from 'vue'
 export function articles(params) {
     return Vue.axios.get('/admin/article', {params: params})
 }
+export function articleGroup(params) {
+    return Vue.axios.get('/admin/article/group', {params: params})
+}
 export function article(id) {
     return Vue.axios.get('/admin/article/'+id)
 }
@@ -18,5 +21,6 @@ export function update(params) {
 
 export default {
     articles
+    , articleGroup
     , remove
 }

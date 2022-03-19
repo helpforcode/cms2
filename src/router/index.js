@@ -8,6 +8,7 @@ import File from '../views/File'
 import Photo from '../views/Photo'
 import Words from '../views/word/Words'
 import WordForm from '../views/word/WordForm'
+import HomeAdmin from "@/views/home-admin/HomeAdmin";
 import Test from '../views/Test'
 
 Vue.use(VueRouter)
@@ -65,6 +66,11 @@ const routes = [
     path: '/admin/test',
     name: 'Test',
     component: Test
+  },
+  {
+    path: '/admin/home',
+    name: 'HomeAdmin',
+    component: HomeAdmin
   },
 ]
 

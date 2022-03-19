@@ -3,7 +3,13 @@
   <div class="article-form">
 
     <v-form>
-      <v-select v-model="form.categoryId" :items="cates" :item-text="'name'" :item-value="'id'" label="Category"></v-select>
+      <v-select v-model="form.categoryId" :items="cates" :item-text="'name'" :item-value="'id'" label="Category">
+      </v-select>
+      <van-field name="switch" label="display">
+        <template #input>
+          <van-switch v-model="form.display"></van-switch>
+        </template>
+      </van-field>
       <v-text-field v-model="form.title" label="Title"></v-text-field>
       <quill-editor v-model="form.content"></quill-editor>
       <v-text-field v-model="form.publishedAt" label="PublishedAt" @focus="toggleDatepicker(true)"></v-text-field>
@@ -32,6 +38,7 @@ import VueQuillEditor from 'vue-quill-editor'
 import {categories} from '@/api/category'
 import {add as ArticleAdd, update as ArticleUpdate, article} from '@/api/article'
 import Photo from '@/views/Photo'
+import {getUrl} from "@/api/image";
 
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -53,6 +60,7 @@ export default {
     return {
       articleId: 0,
       form: {
+        display: false,
         categoryId: 0,
         title: '',
         content: '',
@@ -68,6 +76,7 @@ export default {
       let params = {
         id: this.articleId,
         categoryId: this.form.categoryId,
+        display: this.form.display,
         title: this.form.title,
         content: this.form.content,
         publishedAt: this.form.publishedAt,
@@ -96,7 +105,7 @@ export default {
       console.log('selected:', images)
       console.log(this.selectedImages)
       console.log(this.selectedImages.map(img => img.url))
-    }
+    },
   },
   mounted() {
     this.articleId = Number(this.$route.params.id)
@@ -106,6 +115,9 @@ export default {
         this.form = {
           ...data
         }
+        data.images.map(url => {
+          this.selectedImages.push({relativeUrl: url, url: getUrl(url)})
+        })
       })
     }
     categories().then(response => {

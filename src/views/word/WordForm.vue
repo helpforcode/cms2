@@ -4,7 +4,7 @@
       <div class="d-flex">
         <div class="d-flex" >
             <span class="word" v-for="(item,i) in form.words" v-bind:key="i"
-                  @click="wordsPopup2(i)"
+                  @click="wordsPopup(i)"
             >
               {{item.word}}-{{item.id}}
             </span>
@@ -12,20 +12,13 @@
         <div class="d-flex" @click="showPrimaryPicker = true">
           <span class="word primary-word">{{form.primaryWord.word}}-{{form.primaryWord.id}}</span>
         </div>
-        <van-popup v-model="showPicker" position="bottom">
-          <van-picker
-              show-toolbar
-              :columns="normalWords"
-              @confirm="onWordSelected"
-          />
-        </van-popup>
 
         <van-popup position="bottom" v-for="(item, i) in form.words" v-bind:key="i"
                    v-model="showPickers['picker' + i]"
         >
           <van-picker
               ref="picker"
-              :columns="nWords[i]"
+              :columns="normalWords[i]"
               @confirm="wordConfirm(i)"
               show-toolbar/>
         </van-popup>
@@ -76,6 +69,11 @@ import BottomBtn from "@/components/BottomBtn";
 const dateFormat = 'YYYY-MM-DD'
 const wordCapacity = 6
 
+// todo: order
+// todo: unique
+// todo: style: up/down
+// todo: schedule
+
 export default {
   name: "WordForm",
   components: {
@@ -83,9 +81,7 @@ export default {
   },
   data() {
     return {
-      test: {attr: true},
       edit: false,
-      showPicker: false,
       showPrimaryPicker: false,
       showDatePicker: false,
       showPickers: {
@@ -97,10 +93,9 @@ export default {
         picker5: false,
       },
       minDate: new Date(2020, 0, 1),
-      maxDate: new Date(2022, 10, 10),
+      maxDate: new Date(2028, 10, 10),
 
       normalWords: [],
-      nWords: [],
       primaryWords: {},
       words: [],
       wordsText: [],
@@ -141,14 +136,9 @@ export default {
 
           for(let i = 0; i < wordCapacity; i++) {
             let wd = i < wordDaily.words.length ? wordDaily.words[i] : {id:0};
-            this.normalWords[i] = {
-              values: this.wordsText,
-              defaultIndex: this.getIndexOfWord(wd)
-            }
-            // todo: v-model='here is a var name'
             let pickerName = 'picker'+i
             this.showPickers[pickerName] = false
-            this.nWords[i] = [{
+            this.normalWords[i] = [{
               values: this.wordsText,
               defaultIndex: this.getIndexOfWord(wd)
             }]
@@ -178,10 +168,10 @@ export default {
       for (let i=0; i<wordCapacity; i++) {
         let pickerName = 'picker'+i
         this.showPickers[pickerName] = false
-        this.normalWords[i] = {
+        this.normalWords[i] = [{
           values: this.wordsText,
           defaultIndex: 0,
-        }
+        }]
         // init form for words
         this.form.words[i] = {
           word: '-'
@@ -208,19 +198,12 @@ export default {
       })
       return index
     },
-    onWordSelected(curValues, curIndexes) {
-      // console.log(curValues)
-      // console.log(curIndexes)
-      curIndexes.forEach((index,i) => {
-        // console.log("sel:",this.words[index], i)
-        this.form.words[i] = this.words[index]
-      })
-      this.showPicker = false
-    },
     wordConfirm(i) {
       console.log(this.$refs.picker[i].getValues())
       console.log(this.$refs.picker[i].getIndexes())
-      // todo
+      console.log(this.words[this.$refs.picker[i].getIndexes()[0]])
+      this.form.words[i] = this.words[this.$refs.picker[i].getIndexes()[0]]
+      this.showPickers['picker'+i] = false
     },
     onPrimaryWordSelected(curValues, curIndexes) {
       console.log(curValues, curIndexes)
@@ -229,10 +212,7 @@ export default {
       })
       this.showPrimaryPicker = false
     },
-    wordsPopup() {
-      this.showPicker = true
-    },
-    wordsPopup2(i) {
+    wordsPopup(i) {
       this.showPickers['picker'+i] = true
     },
     dateSelected(value) {
