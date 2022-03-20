@@ -10,6 +10,8 @@
                :items="cates"
                item-key="id"
                item-value="name"
+               label="Category"
+               placeholder="select category"
                @selected="onCateSelected"
       />
 

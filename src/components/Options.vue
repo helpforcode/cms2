@@ -5,8 +5,8 @@
         is-link
         readonly
         name="picker"
-        label="Picker"
-        placeholder="Select"
+        :label="label"
+        :placeholder="placeholder"
         @click="onClick"
     />
     <van-popup v-model="showPicker" position="bottom" >
@@ -28,6 +28,8 @@ export default {
     items: Array,
     itemKey: String,
     itemValue: String,
+    label: String,
+    placeholder: String,
   },
   model: {
     prop: 'selectedItem',
