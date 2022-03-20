@@ -3,16 +3,38 @@
   <div class="article-form">
 
     <v-form>
-      <v-select v-model="form.categoryId" :items="cates" :item-text="'name'" :item-value="'id'" label="Category">
-      </v-select>
+
+      <v-select v-model="form.categoryId" :items="cates" :item-text="'name'" :item-value="'id'" label="Category"/>
+
+      <options v-model="form.categoryId"
+               :items="cates"
+               item-key="id"
+               item-value="name"
+               @selected="onCateSelected"
+      />
+
       <van-field name="switch" label="display">
         <template #input>
           <van-switch v-model="form.display"></van-switch>
         </template>
       </van-field>
-      <v-text-field v-model="form.title" label="Title"></v-text-field>
+      <van-field v-model="form.title" label="Title" placeholder="Input title"></van-field>
       <quill-editor v-model="form.content"></quill-editor>
-      <v-text-field v-model="form.publishedAt" label="PublishedAt" @focus="toggleDatepicker(true)"></v-text-field>
+
+      <van-field
+          v-model="form.publishedAt"
+          label="PublishedAt"
+          @click="showDatePicker = true"
+      />
+      <van-popup v-model="showDatePicker" position="bottom">
+        <van-datetime-picker
+            v-model="publishedAtComputed"
+            type="date"
+            :min-date="minDate"
+            :max-date="maxDate"
+            @confirm="dateSelected"
+        />
+      </van-popup>
 
       <Photo v-model="selectedImages" @change="imageSelectedChange"></Photo>
 
@@ -27,8 +49,9 @@
           @choose="publishedAtSelected"
       >
       </nut-datepicker>
-      <v-btn color="success" @click="articleSubmit">Submit</v-btn>
     </v-form>
+
+    <bottom-btn :button-click="articleSubmit">Submit</bottom-btn>
   </div>
 </template>
 
@@ -39,10 +62,13 @@ import {categories} from '@/api/category'
 import {add as ArticleAdd, update as ArticleUpdate, article} from '@/api/article'
 import Photo from '@/views/Photo'
 import {getUrl} from "@/api/image";
+import BottomBtn from "@/components/BottomBtn";
+import Options from "@/components/Options";
 
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import moment from "@/util/moment";
 
 Vue.use(VueQuillEditor, {
   placeholder: 'Input content ...',
@@ -54,7 +80,9 @@ Vue.use(VueQuillEditor, {
 export default {
   name: 'ArticleForm',
   components: {
-    Photo
+    Photo,
+    BottomBtn,
+    Options,
   },
   data() {
     return {
@@ -69,6 +97,20 @@ export default {
       dataPickerVisible: false,
       cates: [],
       selectedImages: [],
+      showDatePicker: false,
+      minDate: new Date(2020, 0, 1),
+      maxDate: new Date(2028, 10, 10),
+      theDate: new Date(),
+    }
+  },
+  computed: {
+    publishedAtComputed: {
+      get() {
+        return moment(this.form.publishedAt).toDate()
+      },
+      set(date) {
+        console.log(date)
+      }
     }
   },
   methods: {
@@ -101,11 +143,20 @@ export default {
     toggleDatepicker(show) {
       this.dataPickerVisible = show
     },
+    dateSelected(value) {
+      const dateFormat = 'YYYY-MM-DD'
+      this.form.publishedAt = moment(value).format(dateFormat)
+      this.showDatePicker = false
+    },
     imageSelectedChange(images) {
       console.log('selected:', images)
       console.log(this.selectedImages)
       console.log(this.selectedImages.map(img => img.url))
     },
+    onCateSelected(cateId) {
+      console.log(cateId)
+      console.log(this.form.categoryId)
+    }
   },
   mounted() {
     this.articleId = Number(this.$route.params.id)

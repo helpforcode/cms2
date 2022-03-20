@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <van-cell is-link @click="showPopup">show popup</van-cell>
+    <van-cell is-link @click="showPopup">Select Images</van-cell>
 
     <van-popup v-model="popup" position="bottom" :style="{height: '40%'}">
       <div class="box-container">
