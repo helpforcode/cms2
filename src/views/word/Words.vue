@@ -17,7 +17,7 @@
                  v-bind:class="{inactive: item.status === 0}"
                  class="title van-ellipsis">
           <router-link :to="{name: 'WordForm', params:{id: item.id}}">
-            <span class="word-date">{{item.day}}</span>
+            <span class="word-date">{{item.code}}</span>
             <span class="word-normal" v-for="w in item.words" v-bind:key="w.id">{{w.word}}-{{w.id}}</span>
             <span class="word-primary">{{item.primaryWord.word}}-{{item.primaryWord.id}}</span>
           </router-link>

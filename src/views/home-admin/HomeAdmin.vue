@@ -10,7 +10,7 @@
         <router-link :to="{name: 'WordForm', params:{id: wordsNext.id}}">Update</router-link>
       </div>
       <div v-else>
-        <router-link :to="{name: 'Words'}">Go Set</router-link>
+        <router-link :to="{name: 'Words'}">Go Set Next</router-link>
       </div>
     </div>
 

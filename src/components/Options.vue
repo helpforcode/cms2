@@ -24,7 +24,7 @@
 export default {
   name: "Options",
   props: {
-    selectedItem: Number,
+    selectedKey: Number,
     items: Array,
     itemKey: String,
     itemValue: String,
@@ -32,12 +32,24 @@ export default {
     placeholder: String,
   },
   model: {
-    prop: 'selectedItem',
+    prop: 'selectedKey',
     event: 'selected'
   },
   computed: {
     columns: function() {
-      return this.items.map(item => item[this.itemValue])
+      // calculate default index
+      let defaultIndex = 0
+      this.items.forEach((item, i) => {
+        if (item[this.itemKey] === this.selectedKey) {
+          defaultIndex = i
+        }
+      })
+
+      // set columns and defaultIndex
+      return [{
+        values: this.items.map(item => item[this.itemValue]),
+        defaultIndex: defaultIndex
+      }]
     }
   },
   data() {
@@ -46,16 +58,36 @@ export default {
       showPicker: false,
     }
   },
+  watch: {
+    items(val) {
+      // sometimes this first
+      this.initSelected(val)
+    },
+    selectedKey(key) {
+      console.log('key', key)
+      // sometimes this first
+      this.initSelected(this.items)
+    }
+  },
   methods: {
     onClick() {
       console.log('click')
       this.showPicker = true
     },
-    onConfirm(value, index) {
-      this.selectedValue = value
+    onConfirm(values, indexes) {
+      this.selectedValue = values[0]
       this.showPicker = false
       // event param should be a type of [model.prop.type](here is Number)
-      this.$emit('selected', this.items[index][this.itemKey])
+      this.$emit('selected', this.items[indexes[0]][this.itemKey])
+    },
+    initSelected(items) {
+      items.forEach(item => {
+        // if cate.id === 2
+        if (item[this.itemKey] === this.selectedKey) {
+          // selectedValue = cate.name
+          this.selectedValue = item[this.itemValue]
+        }
+      })
     }
   }
 

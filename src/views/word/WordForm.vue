@@ -35,7 +35,7 @@
       <div class="d-flex">
         <van-field
             v-model="formatDate"
-            label="day"
+            label="Day"
             @click="showDatePicker = true"
         />
       </div>
@@ -52,6 +52,13 @@
         </van-popup>
       </div>
     </div>
+
+
+    <van-field name="switch" label="Status">
+      <template #input>
+        <van-switch v-model="form.status"></van-switch>
+      </template>
+    </van-field>
 
     <BottomBtn :button-click="save">
       <div>Submit</div>

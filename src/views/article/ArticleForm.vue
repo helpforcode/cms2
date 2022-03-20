@@ -3,9 +3,6 @@
   <div class="article-form">
 
     <v-form>
-
-      <v-select v-model="form.categoryId" :items="cates" :item-text="'name'" :item-value="'id'" label="Category"/>
-
       <options v-model="form.categoryId"
                :items="cates"
                item-key="id"
