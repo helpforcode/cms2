@@ -39,17 +39,74 @@
 
     <v-main>
       <router-view/>
+
+
+      <div class="fab-container">
+        <v-speed-dial
+            bottom
+            left
+            direction="top"
+        >
+          <template v-slot:activator>
+            <v-btn
+                fab
+                dark
+            >
+              <v-icon>fa-compass</v-icon>
+            </v-btn>
+          </template>
+          <v-btn
+              fab
+              dark
+              small
+              v-for="(item, index) in navs" :key="index"
+              @click="nav(item, index)"
+          >
+            <v-icon class="" >{{item.icon}}</v-icon>
+          </v-btn>
+        </v-speed-dial>
+      </div>
+
     </v-main>
+
   </v-app>
 </template>
-
 <script>
 
 export default {
   name: 'App',
+  components: {
+  },
 
-  data: () => ({
-    //
-  }),
+  data() {
+    return {
+      navs: [
+        {'icon': 'fa-home', 'route': 'HomeAdmin'},
+        {'icon': 'fa-info', 'route': 'Article'},
+        {'icon': 'fa-trophy', 'route': 'Words'},
+      ],
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    nav(item, index) {
+      console.log(item)
+      console.log(index)
+      this.$router.push({name: item.route})
+    },
+  }
 };
 </script>
+
+<style scoped>
+.v-speed-dial {
+  position: absolute;
+}
+.fab-container {
+  z-index: 9999;
+  position: fixed;
+  bottom: 1em;
+  left : 1em;
+}
+</style>

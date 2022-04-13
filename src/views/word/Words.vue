@@ -35,8 +35,10 @@
 </template>
 
 <script>
-import word from "@/api/word";
-import BottomBtn from "@/components/BottomBtn";
+
+import word from "@/api/word"
+import BottomBtn from "@/components/BottomBtn"
+
 export default {
   name: "Words",
   components: {

@@ -42,21 +42,9 @@
       </van-row>
     </van-list>
 
-    <div class="bottom-bar">
-      <v-fab-transition>
-        <v-btn
-            class="add"
-            color="grey darken-3"
-            dark
-            bottom
-            left
-            fab
-            :to="{name: 'ArticleForm', params: {id: 0}}"
-        >
-          <v-icon>fa-plus</v-icon>
-        </v-btn>
-      </v-fab-transition>
-    </div>
+    <BottomBtn :button-click="toAdd">
+      <div>Add</div>
+    </BottomBtn>
 
   </div>
 </template>
@@ -65,8 +53,12 @@
 // todo: category
 
 import article from "@/api/article"
+import BottomBtn from "@/components/BottomBtn";
 export default {
   name: 'Article',
+  components: {
+    BottomBtn
+  },
   data() {
     return {
       finished: false,
@@ -78,6 +70,9 @@ export default {
     }
   },
   methods: {
+    toAdd() {
+      this.$router.push({name: 'ArticleForm', params: {id: 0}})
+    },
     nextPage(curPage) {
       this.timer = setTimeout(() => {
         curPage = curPage || this.pageParams.page
