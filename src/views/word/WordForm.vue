@@ -9,7 +9,7 @@
                    v-model="showPickers['picker' + i]"
         >
           <van-picker
-              ref="picker"
+              :ref="'picker' + i"
               :columns="normalWords[i]"
               @confirm="wordConfirm(i)"
               show-toolbar/>
@@ -200,14 +200,16 @@ export default {
       return index
     },
     wordConfirm(i) {
-      console.log(i)
-      console.log(this.$refs.picker)
-      console.log(this.$refs.picker[i].getValues())
-      console.log(this.$refs.picker[i].getIndexes())
-      console.log(this.words[this.$refs.picker[i].getIndexes()[0]])
+      // console.log(i)
+      // console.log(this.$refs.picker)
+      // console.log(this.$refs.picker[i].getValues())
+      // console.log(this.$refs.picker[i].getIndexes())
+      // console.log(this.words[this.$refs.picker[i].getIndexes()[0]])
       // this.form.words[i] = this.words[this.$refs.picker[i].getIndexes()[0]]
       // this.form.words.reverse().reverse()
-      this.$set(this.form.words, i, this.words[this.$refs.picker[i].getIndexes()[0]])
+      // this.$set(this.form.words, i, this.words[this.$refs.picker[i].getIndexes()[0]])
+      // console.log(this.$refs)
+      this.$set(this.form.words, i, this.words[this.$refs['picker'+i][0].getIndexes()[0]])
       this.showPickers['picker'+i] = false
     },
     onPrimaryWordSelected(curValues, curIndexes) {
