@@ -15,11 +15,10 @@
         <!--  title  -->
         <van-col span="24"
                  v-bind:class="{inactive: item.status === 0}"
-                 class="title van-ellipsis">
+                 class="subject van-ellipsis">
           <router-link :to="{name: 'WordForm', params:{id: item.id}}">
             <span class="word-date">{{item.code}}</span>
-            <span class="word-normal" v-for="w in item.words" v-bind:key="w.id">{{w.word}}-{{w.id}}</span>
-            <span class="word-primary">{{item.primaryWord.word}}-{{item.primaryWord.id}}</span>
+            <WordRow :item="item"/>
           </router-link>
         </van-col>
 
@@ -38,11 +37,13 @@
 
 import word from "@/api/word"
 import BottomBtn from "@/components/BottomBtn"
+import WordRow from "@/components/WordRow";
 
 export default {
   name: "Words",
   components: {
-    BottomBtn
+    BottomBtn,
+    WordRow
   },
   data() {
     return {
@@ -96,14 +97,51 @@ export default {
 
 <style scoped>
 
+.item-row {
+  margin-top: 12px;
+}
 .words {
   font-size: 12px;
 }
 .word-primary {
   font-weight: bold;
 }
-.title span {
+.subject span {
   padding: 1em;
   font-size: 12px;
+}
+.word-block {
+  display: inline-flex;
+  flex-direction: column;
+  width: 2em;
+  height: 3.5em;
+  border: .5px solid #262626;
+  border-radius: 0;
+  margin: 1px 2px;
+}
+.word-block span {
+  padding: 2px;
+  text-align: center;
+  height: 50%;
+  width: 100%;
+  font-weight: bold;
+}
+.word-txt {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+.word-id {
+  color: white;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.normal .word-id {
+  background-color: #498ff2;
+}
+.special .word-id {
+  background-color: #f27649;
+}
+.special .word-txt {
+  color: #f27649;
 }
 </style>

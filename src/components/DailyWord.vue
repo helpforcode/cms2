@@ -2,16 +2,19 @@
   <div>
 
     <span>{{words.code}}</span>
-    <span v-for="w in words.words" :key="w.id" >{{w.word}}-{{w.id}}</span>
-    <span>{{words.primaryWord.word}}-{{words.primaryWord.id}}</span>
+    <WordRow :item="words"/>
   </div>
 </template>
 
 <script>
 import {dailyLatest} from "@/api/word";
+import WordRow from "@/components/WordRow";
 
 export default {
   name: "DailyWord",
+  components: {
+    WordRow
+  },
   data() {
     return {
       words: {primaryWord: {id: 0, word: ''}}

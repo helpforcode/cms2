@@ -2,16 +2,8 @@
   <div>
     <div class="d-flex flex-column">
       <div class="d-flex">
-        <div class="d-flex" >
-            <span class="word" v-for="(item,i) in form.words" v-bind:key="i"
-                  @click="wordsPopup(i)"
-            >
-              {{item.word}}-{{item.id}}
-            </span>
-        </div>
-        <div class="d-flex" @click="showPrimaryPicker = true">
-          <span class="word primary-word">{{form.primaryWord.word}}-{{form.primaryWord.id}}</span>
-        </div>
+
+        <WordRow :item="form" @normalClicked="normalClicked" @primaryClicked="primaryClicked"/>
 
         <van-popup position="bottom" v-for="(item, i) in form.words" v-bind:key="i"
                    v-model="showPickers['picker' + i]"
@@ -72,6 +64,7 @@
 import word from "@/api/word";
 import moment from "@/util/moment";
 import BottomBtn from "@/components/BottomBtn";
+import WordRow from "@/components/WordRow";
 
 const dateFormat = 'YYYY-MM-DD'
 const wordCapacity = 6
@@ -84,7 +77,8 @@ const wordCapacity = 6
 export default {
   name: "WordForm",
   components: {
-    BottomBtn
+    BottomBtn,
+    WordRow,
   },
   data() {
     return {
@@ -206,10 +200,14 @@ export default {
       return index
     },
     wordConfirm(i) {
+      console.log(i)
+      console.log(this.$refs.picker)
       console.log(this.$refs.picker[i].getValues())
       console.log(this.$refs.picker[i].getIndexes())
       console.log(this.words[this.$refs.picker[i].getIndexes()[0]])
-      this.form.words[i] = this.words[this.$refs.picker[i].getIndexes()[0]]
+      // this.form.words[i] = this.words[this.$refs.picker[i].getIndexes()[0]]
+      // this.form.words.reverse().reverse()
+      this.$set(this.form.words, i, this.words[this.$refs.picker[i].getIndexes()[0]])
       this.showPickers['picker'+i] = false
     },
     onPrimaryWordSelected(curValues, curIndexes) {
@@ -225,6 +223,12 @@ export default {
     dateSelected(value) {
       this.form.day = moment(value).format(dateFormat)
       this.showDatePicker = false
+    },
+    normalClicked(param) {
+      this.wordsPopup(param.index)
+    },
+    primaryClicked() {
+      this.showPrimaryPicker = true
     },
     save() {
       let resolved = response => {

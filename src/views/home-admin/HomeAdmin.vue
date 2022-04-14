@@ -4,8 +4,7 @@
       <daily-word/>
       <div v-if="wordsNext">
         <span>{{wordsNext.code}}</span>
-        <span v-for="w in wordsNext.words" :key="w.id" >{{w.word}}-{{w.id}}</span>
-        <span>{{wordsNext.primaryWord.word}}-{{wordsNext.primaryWord.id}}</span>
+        <WordRow :item="wordsNext"/>
 
         <router-link :to="{name: 'WordForm', params:{id: wordsNext.id}}">Update</router-link>
       </div>
@@ -36,6 +35,7 @@
 import DailyWord from "@/components/DailyWord";
 import {dailyNext} from "@/api/word";
 import {articleGroup} from "@/api/article";
+import WordRow from "@/components/WordRow";
 
 export default {
   name: "HomeAdmin",
@@ -47,6 +47,7 @@ export default {
   },
   components: {
     DailyWord,
+    WordRow,
   },
   mounted() {
     dailyNext().then(response => {
