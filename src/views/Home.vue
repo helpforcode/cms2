@@ -3,6 +3,7 @@
     <van-sticky>
       <daily-word />
     </van-sticky>
+    <router-link :to="{name: 'History'}">To History</router-link>
     <hello-world />
   </div>
 </template>

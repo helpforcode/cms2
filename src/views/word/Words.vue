@@ -17,8 +17,18 @@
                  v-bind:class="{inactive: item.status === 0}"
                  class="subject van-ellipsis">
           <router-link :to="{name: 'WordForm', params:{id: item.id}}">
-            <span class="word-date">{{item.code}}</span>
-            <WordRow :item="item"/>
+            <van-row>
+              <van-col span="24">
+                <span class="word-date">{{item.code}}</span>
+                <span class="word-date">{{item.day}}</span>
+              </van-col>
+            </van-row>
+
+            <van-row>
+              <van-col span="24">
+                <WordRow :item="item"/>
+              </van-col>
+            </van-row>
           </router-link>
         </van-col>
 
@@ -102,12 +112,13 @@ export default {
 }
 .words {
   font-size: 12px;
+  padding-left: 1em;
 }
 .word-primary {
   font-weight: bold;
 }
 .subject span {
-  padding: 1em;
+  padding: 1em 1em 1em 0;
   font-size: 12px;
 }
 .word-block {

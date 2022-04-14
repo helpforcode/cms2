@@ -4,9 +4,9 @@
       <daily-word/>
       <div v-if="wordsNext">
         <span>{{wordsNext.code}}</span>
-        <WordRow :item="wordsNext"/>
-
-        <router-link :to="{name: 'WordForm', params:{id: wordsNext.id}}">Update</router-link>
+        <span @click="toUpdate(wordsNext.id)">
+          <WordRow :item="wordsNext" />
+        </span>
       </div>
       <div v-else>
         <router-link :to="{name: 'Words'}">Go Set Next</router-link>
@@ -48,6 +48,11 @@ export default {
   components: {
     DailyWord,
     WordRow,
+  },
+  methods: {
+    toUpdate(id) {
+      this.$router.push({name: 'WordForm', params:{id: id}})
+    }
   },
   mounted() {
     dailyNext().then(response => {
