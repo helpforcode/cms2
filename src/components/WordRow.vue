@@ -1,14 +1,16 @@
 <template>
   <div class="word-row">
     <div class="word-block normal" :data-word="w.word"
-         :class="{inactive: wordsFiltered.length > 0 && wordsFiltered.indexOf(w.word) === -1}"
          v-for="(w, index) in localItem.words" v-bind:key="w.id"
+         :class="{inactive: wordsFiltered.length > 0 && wordsFiltered.indexOf(w.word) === -1
+         || indexFiltered.length > 0 && indexFiltered.indexOf(index) === -1}"
          @click="normalClicked(w, index)">
       <span class="word-txt">{{w.word}}</span>
       <span class="word-id">{{w.id}}</span>
     </div>
     <div class="word-block special" :data-word="localItem.primaryWord.word"
-         :class="{inactive: wordsFiltered.length > 0 && wordsFiltered.indexOf(localItem.primaryWord.word) === -1}"
+         :class="{inactive: wordsFiltered.length > 0 && wordsFiltered.indexOf(localItem.primaryWord.word) === -1
+         || indexFiltered.length > 0 && indexFiltered.indexOf(6) === -1}"
          @click="primaryClicked(localItem.primaryWord)">
       <span class="word-txt">{{localItem.primaryWord.word}}</span>
       <span class="word-id">{{localItem.primaryWord.id}}</span>
@@ -22,6 +24,7 @@ export default {
   name: "WordRow",
   props: {
     item: {},
+    indexFiltered: [],
     wordsFiltered: [],
     what: {
       type: String,

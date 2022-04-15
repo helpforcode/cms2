@@ -1,13 +1,10 @@
 <template>
   <div class="history">
     <van-row class="condition">
-      <span class="filter-btn">一</span>
-      <span class="filter-btn">二</span>
-      <span class="filter-btn">三</span>
-      <span class="filter-btn">四</span>
-      <span class="filter-btn">五</span>
-      <span class="filter-btn">六</span>
-      <span class="filter-btn">七</span>
+      <span v-for="(i, index) in indexFilterBtn" v-bind:key="i"
+            class="filter-btn"
+            @click="indexBtnClick(index)" :class="{active: indexFiltered.indexOf(index) !== -1}">{{i}}
+      </span>
     </van-row>
     <van-row class="condition">
       <span @click="filterBtnClick(word, i)"
@@ -36,7 +33,7 @@
 
           <van-row>
             <van-col span="24">
-              <WordRow :item="item" :words-filtered="wordsFiltered"/>
+              <WordRow :item="item" :words-filtered="wordsFiltered" :index-filtered="indexFiltered"/>
             </van-col>
           </van-row>
       </van-col>
@@ -59,6 +56,8 @@ export default {
     return {
       items: [],
       words: [],
+      indexFilterBtn: ['一', '二', '三', '四', '五', '六', '七'],
+      indexFiltered: [],
       wordsFiltered: [],
       wordsWithActive: [],
       loading: false,
@@ -83,6 +82,13 @@ export default {
     resetWordFilter() {
       this.wordsFiltered = []
       this.wordsWithActive.forEach(w => w.active = false)
+    },
+    indexBtnClick(index) {
+      if (this.indexFiltered.indexOf(index) !== -1) {
+        this.indexFiltered.splice(this.indexFiltered.indexOf(index), 1)
+      } else {
+        this.indexFiltered.push(index)
+      }
     },
     filterBtnClick(word, i) {
       console.log(word)
