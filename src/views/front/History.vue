@@ -5,6 +5,7 @@
             class="filter-btn"
             @click="indexBtnClick(index)" :class="{active: indexFiltered.indexOf(index) !== -1}">{{i}}
       </span>
+      <span class="filter-btn" @click="resetIndexFilter">重置</span>
     </van-row>
     <van-row class="condition">
       <span @click="filterBtnClick(word, i)"
@@ -83,6 +84,9 @@ export default {
       this.wordsFiltered = []
       this.wordsWithActive.forEach(w => w.active = false)
     },
+    resetIndexFilter() {
+      this.indexFiltered = []
+    },
     indexBtnClick(index) {
       if (this.indexFiltered.indexOf(index) !== -1) {
         this.indexFiltered.splice(this.indexFiltered.indexOf(index), 1)
@@ -125,6 +129,12 @@ export default {
 </script>
 
 <style scoped>
+.item-row {
+  margin-top: 1em;
+}
+.condition {
+  margin-top: 1em;
+}
 .history {
   font-size: 12px;
 }

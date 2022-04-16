@@ -2,15 +2,15 @@
   <div class="word-row">
     <div class="word-block normal" :data-word="w.word"
          v-for="(w, index) in localItem.words" v-bind:key="w.id"
-         :class="{inactive: wordsFiltered.length > 0 && wordsFiltered.indexOf(w.word) === -1
-         || indexFiltered.length > 0 && indexFiltered.indexOf(index) === -1}"
+         :class="{inactive: localWordsFiltered.length > 0 && localWordsFiltered.indexOf(w.word) === -1
+         || localIndexFiltered.length > 0 && localIndexFiltered.indexOf(index) === -1}"
          @click="normalClicked(w, index)">
       <span class="word-txt">{{w.word}}</span>
       <span class="word-id">{{w.id}}</span>
     </div>
     <div class="word-block special" :data-word="localItem.primaryWord.word"
-         :class="{inactive: wordsFiltered.length > 0 && wordsFiltered.indexOf(localItem.primaryWord.word) === -1
-         || indexFiltered.length > 0 && indexFiltered.indexOf(6) === -1}"
+         :class="{inactive: localWordsFiltered.length > 0 && localWordsFiltered.indexOf(localItem.primaryWord.word) === -1
+         || localIndexFiltered.length > 0 && localIndexFiltered.indexOf(6) === -1}"
          @click="primaryClicked(localItem.primaryWord)">
       <span class="word-txt">{{localItem.primaryWord.word}}</span>
       <span class="word-id">{{localItem.primaryWord.id}}</span>
@@ -36,6 +36,8 @@ export default {
   },
   data() {
     return {
+      localIndexFiltered: [],
+      localWordsFiltered: []
       // localItem: {}
     }
   },
@@ -57,10 +59,18 @@ export default {
     localItem(newV, oldV) {
       console.log("Watching local item", oldV)
       this.$emit('update:item', newV);
+    },
+    indexFiltered(newV) {
+      this.localIndexFiltered = newV
+    },
+    wordsFiltered(newV) {
+      this.localWordsFiltered = newV
     }
   },
   mounted() {
     this.localItem = this.item;
+    this.localIndexFiltered = this.indexFiltered || [];
+    this.localWordsFiltered = this.wordsFiltered || [];
   },
   methods: {
     primaryClicked(word) {
