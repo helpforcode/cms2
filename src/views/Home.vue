@@ -1,7 +1,9 @@
 <template>
   <div>
     <van-sticky>
-      <daily-word />
+      <div class="daily-word-panel">
+        <daily-word />
+      </div>
     </van-sticky>
     <router-link :to="{name: 'History'}">To History</router-link>
     <hello-world />
@@ -21,3 +23,9 @@
     },
   }
 </script>
+<style scoped>
+.daily-word-panel {
+  background-color: white;
+  padding: 1em 0;
+}
+</style>

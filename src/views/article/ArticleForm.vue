@@ -23,6 +23,7 @@
       <van-field
           v-model="form.publishedAt"
           label="PublishedAt"
+          readonly
           @click="showDatePicker = true"
       />
       <van-popup v-model="showDatePicker" position="bottom">

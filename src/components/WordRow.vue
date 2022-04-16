@@ -91,7 +91,7 @@ export default {
 .word-block {
   display: inline-flex;
   flex-direction: column;
-  width: 2em;
+  width: 3em;
   height: 3.5em;
   border: .5px solid #262626;
   border-radius: 0;
