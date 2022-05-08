@@ -7,6 +7,7 @@ import ArticleForm from '../views/article/ArticleForm.vue'
 import ArticleDetail from '../views/article/ArticleDetail.vue'
 import File from '../views/File'
 import Photo from '../views/Photo'
+import Info from '@/views/info/Info'
 import Words from '../views/word/Words'
 import WordForm from '../views/word/WordForm'
 import HomeAdmin from "@/views/home-admin/HomeAdmin";
@@ -37,6 +38,11 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/article/Article.vue')
+  },
+  {
+    path: '/admin/info',
+    name: 'Info',
+    component: Info
   },
   {
     path: '/admin/article/:id(\\d+)',

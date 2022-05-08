@@ -82,7 +82,8 @@ export default {
     return {
       navs: [
         {'icon': 'fa-home', 'route': 'HomeAdmin'},
-        {'icon': 'fa-key', 'route': 'Article'},
+        // {'icon': 'fa-key', 'route': 'Article'},
+        {'icon': 'fa-key', 'route': 'Info'},
         {'icon': 'fa-trophy', 'route': 'Words'},
       ],
     }
