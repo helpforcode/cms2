@@ -71,11 +71,6 @@ import toast from '@nutui/nutui/dist/packages/toast'
 const dateFormat = 'YYYY-MM-DD'
 const wordCapacity = 6
 
-// todo: order
-// todo: unique
-// todo: style: up/down
-// todo: schedule
-
 export default {
   name: "WordForm",
   components: {
@@ -211,9 +206,14 @@ export default {
       // this.form.words.reverse().reverse()
       // this.$set(this.form.words, i, this.words[this.$refs.picker[i].getIndexes()[0]])
       // console.log(this.$refs)
-      console.log(this.form.words);
       let word = this.words[this.$refs['picker'+i][0].getIndexes()[0]];
-      if (this.form.words.indexOf(word) !== -1) {
+      let exist = false
+      this.form.words.forEach(w => {
+        if (w.id === word.id) {
+          exist = true
+        }
+      })
+      if (exist) {
         toast.fail("已存在")
         return
       }

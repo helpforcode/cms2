@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home">
     <van-sticky>
       <div class="daily-word-panel">
         <daily-word />

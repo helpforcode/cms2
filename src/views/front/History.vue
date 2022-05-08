@@ -1,6 +1,12 @@
 <template>
   <div class="history">
     <van-row class="condition">
+      <span class="filter-btn" v-for="y in years" v-bind:key="y"
+          @click="yearBtnClick(y)" :class="{active: yearSelected === y}">
+        {{y}}
+      </span>
+    </van-row>
+    <van-row class="condition">
       <span v-for="(i, index) in indexFilterBtn" v-bind:key="i"
             class="filter-btn"
             @click="indexBtnClick(index)" :class="{active: indexFiltered.indexOf(index) !== -1}">{{i}}
@@ -16,15 +22,17 @@
       </span>
       <span class="filter-btn" @click="resetWordFilter">重置</span>
     </van-row>
-    <van-row
-        class="item-row"
-        v-for="item in items" :key="item.id"
-        :to="{name: 'WordDetail', params:{id: item.id}}"
-    >
-      <!--  title  -->
-      <van-col span="24"
-               v-bind:class="{inactive: item.status === 0}"
-               class="subject van-ellipsis">
+
+    <template v-if="!loading">
+      <van-row
+          class="item-row"
+          v-for="item in items" :key="item.id"
+          :to="{name: 'WordDetail', params:{id: item.id}}"
+      >
+        <!--  title  -->
+        <van-col span="24"
+                 v-bind:class="{inactive: item.status === 0}"
+                 class="subject van-ellipsis">
           <van-row>
             <van-col span="24">
               <span class="word-date">{{item.code}}</span>
@@ -37,16 +45,21 @@
               <WordRow :item="item" :words-filtered="wordsFiltered" :index-filtered="indexFiltered"/>
             </van-col>
           </van-row>
-      </van-col>
+        </van-col>
 
-      <div class="van-hairline--bottom"></div>
-    </van-row>
+        <div class="van-hairline--bottom"></div>
+      </van-row>
+    </template>
+    <template v-else>
+      <van-loading color="#1989fa" />
+    </template>
   </div>
 </template>
 <script>
 
 import word from "@/api/word";
 import WordRow from "@/components/WordRow";
+import moment from "@/util/moment";
 
 export default {
   name: "History",
@@ -55,6 +68,8 @@ export default {
   },
   data() {
     return {
+      yearSelected: moment().year(),
+      years: [],
       items: [],
       words: [],
       indexFilterBtn: ['一', '二', '三', '四', '五', '六', '七'],
@@ -65,9 +80,16 @@ export default {
     }
   },
   methods: {
-    history() {
+    yearInit() {
+      const fromYear = 2020
+      let curYear = moment().year();
+      for (let i = fromYear; i <= curYear; i++) {
+        this.years.push(i)
+      }
+    },
+    history(year) {
       this.loading = true
-      word.dailyWordsAll().then(response => {
+      word.dailyWordsAll({year: year}).then(response => {
         this.items = response.data.data
         this.loading = false
       })
@@ -86,6 +108,15 @@ export default {
     },
     resetIndexFilter() {
       this.indexFiltered = []
+    },
+    yearBtnClick(y) {
+      if (this.yearSelected === y) {
+        return
+      }
+      this.resetIndexFilter()
+      this.resetWordFilter()
+      this.yearSelected = y
+      this.history(y)
     },
     indexBtnClick(index) {
       if (this.indexFiltered.indexOf(index) !== -1) {
@@ -122,8 +153,9 @@ export default {
   computed: {
   },
   mounted() {
+    this.yearInit()
     this.wordsDistinct()
-    this.history()
+    this.history(moment().year())
   }
 }
 </script>

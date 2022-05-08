@@ -99,7 +99,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
+body {
+  font-size: 12px;
+}
 .v-speed-dial {
   position: absolute;
 }
