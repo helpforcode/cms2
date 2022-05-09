@@ -23,13 +23,10 @@
                         <van-col span="2">
                             <span class="inline-input code">{{info.code}}</span>
                         </van-col>
-                        <van-col span="4">
-                            <span class="inline-input name">{{info.name}}</span>
-                        </van-col>
                         <van-col span="8">
                             <span class="inline-input tt">{{info.title}}</span>
                         </van-col>
-                        <van-col span="2">
+                        <van-col span="6">
                             <span class="inline-input remark">{{info.remark}}</span>
                         </van-col>
                         <van-col span="3">
@@ -45,7 +42,12 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="cate">
+            <van-row>
+                <van-col class="cate-add" span="24">+</van-col>
+            </van-row>
+        </div>
+        <div class="cate">
             TODO: how TODO do?
             动态列表上的Inline edit?
 
@@ -68,6 +70,8 @@
 </template>
 
 <script>
+import info from "@/api/info"
+
 export default {
     name: 'Info',
     data() {
@@ -99,6 +103,12 @@ export default {
             ]
         }
     },
+    mounted() {
+        info.all().then(response => {
+            let data = response.data.data;
+            this.cates = data;
+        })
+    },
     methods: {
         itemPreAdd(cateIndex) {
             this.cates[cateIndex].operating = true
@@ -127,6 +137,11 @@ export default {
     border: 1px solid #ccc;
     padding: 1em;
     margin-bottom: 2em;
+}
+.cate-add {
+    text-align: center;
+    width: 100%;
+    
 }
 .info-list {
     .inline-input {
