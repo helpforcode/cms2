@@ -7,15 +7,18 @@
                     <span v-if="cate.operating">返回</span>
                     <span v-else>添加</span>
                 </van-button>
-                <div v-if="cate.operating">
+                <div v-if="cate.operating === 'edit' || cate.operating === 'add'">
                     <van-cell-group inset>
                         <van-field v-model="tmpAdd.code" label="Code" placeholder="code" />
-                        <van-field v-model="tmpAdd.name" label="Name" placeholder="name"/>
                         <van-field v-model="tmpAdd.title" label="Title" placeholder="title"/>
                         <van-field v-model="tmpAdd.remark" label="Remark" placeholder="remark"/>
                         <van-field v-model="tmpAdd.state" label="State" placeholder="state"/>
-                        <van-field v-model="tmpAdd.visible" label="Visible" placeholder="visible"/>
-                        <van-button type="default" @click="itemAdd(cateIndex)">OK</van-button>
+                        <van-field name="visible" label="Visible">
+                            <template #input>
+                            <van-switch v-model="tmpAdd.visible"></van-switch>
+                            </template>
+                        </van-field>
+                        <van-button type="default" @click="itemOperate(cateIndex, cate.operating)">OK</van-button>
                     </van-cell-group>
                 </div>
                 <div v-else class="info-list">
@@ -111,19 +114,34 @@ export default {
     },
     methods: {
         itemPreAdd(cateIndex) {
-            this.cates[cateIndex].operating = true
+            this.cates[cateIndex].operating = 'add'
         },
         backToList(cateIndex) {
             this.cates[cateIndex].operating = false
             this.tmpAdd = {}
         },
-        itemAdd(cateIndex) {
-            this.cates[cateIndex].infos.push(this.tmpAdd)
-            this.cates[cateIndex].operating = false
-            this.tmpAdd = {}
+        itemOperate(cateIndex, operate) {
+            // this.cates[cateIndex].infos.push(this.tmpAdd)
+            // this.cates[cateIndex].operating = false
+            // this.tmpAdd = {}
+            this.tmpAdd.cateId = this.cates[cateIndex].cateId
+
+            if (operate === 'add') {
+                info.add(this.tmpAdd).then(response => {
+                    if (response.status === 200) {
+                        this.$router.go(0)
+                    }
+                })
+            } else if (operate === 'edit') {
+                info.update(this.tmpAdd).then(response => {
+                    if (response.status === 200) {
+                        this.$router.go(0)
+                    }
+                })
+            }
         },
         itemEdit(cateIndex, infoIndex, info) {
-            this.cates[cateIndex].operating = true
+            this.cates[cateIndex].operating = 'edit'
             this.tmpAdd = info 
             console.log(infoIndex)
         },
