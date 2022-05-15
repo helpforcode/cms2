@@ -8,6 +8,8 @@ import ArticleDetail from '../views/article/ArticleDetail.vue'
 import File from '../views/File'
 import Photo from '../views/Photo'
 import Info from '@/views/info/Info'
+import InfoForm from '@/views/info/InfoForm'
+import InfoCateForm from '@/views/info/InfoCateForm'
 import Words from '../views/word/Words'
 import WordForm from '../views/word/WordForm'
 import HomeAdmin from "@/views/home-admin/HomeAdmin";
@@ -43,6 +45,16 @@ const routes = [
     path: '/admin/info',
     name: 'Info',
     component: Info
+  },
+  {
+    path: '/admin/info/:cateId(\\d+)/:id(\\d+)',
+    name: 'InfoForm',
+    component: InfoForm
+  },
+  {
+    path: '/admin/info/:id(\\d+)',
+    name: 'InfoCateForm',
+    component: InfoCateForm
   },
   {
     path: '/admin/article/:id(\\d+)',

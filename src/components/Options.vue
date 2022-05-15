@@ -24,7 +24,7 @@
 export default {
   name: "Options",
   props: {
-    selectedKey: Number,
+    selectedKey: {type: [Number, Function], default: 0},
     items: Array,
     itemKey: String,
     itemValue: String,
@@ -81,6 +81,7 @@ export default {
       this.$emit('selected', this.items[indexes[0]][this.itemKey])
     },
     initSelected(items) {
+      console.log("init selected: ", items)
       items.forEach(item => {
         // if cate.id === 2
         if (item[this.itemKey] === this.selectedKey) {
