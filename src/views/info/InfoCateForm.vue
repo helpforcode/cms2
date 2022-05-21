@@ -3,7 +3,7 @@
     <van-cell-group inset>
       <van-field v-model="form.name" label="Name" placeholder="name"/>
       <van-field v-model="form.od" label="Order" placeholder="order"/>
-      <bottom-btn :button-click="submit">OK</bottom-btn>
+      <bottom-btn :button-click="submit" :split="true">OK</bottom-btn>
 
     </van-cell-group>
 

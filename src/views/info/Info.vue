@@ -1,9 +1,14 @@
 <template>
   <div class="cms-info">
     <div class="cate" v-for="(cate) in cates" :key="cate.cateId">
-      <div class="info-title">{{ cate.cateName }}</div>
+      <div class="info-title" @click="to('InfoCateForm', {id: cate.cateId})">
+        {{ cate.cateName }}
+        <span class="title-edit">
+          <FontAwesomeIcon :icon="['fas', 'edit']"></FontAwesomeIcon>
+        </span>
+      </div>
       <div class="info-container">
-        <van-button type="default" @click="to('InfoForm', {id:0, cateId:cate.cateId})">
+        <van-button class="row-add" type="default" @click="to('InfoForm', {id:0, cateId:cate.cateId})">
           <FontAwesomeIcon :icon="['fas', 'plus']"></FontAwesomeIcon>
         </van-button>
         <van-row v-for="(info) in cate.infos" :key="info.id"
@@ -106,6 +111,11 @@ export default {
   padding: 3em;
 }
 
+.info-title {
+  font-weight: bold;
+  margin-bottom: .5em;
+}
+
 .visible {
   vertical-align: center;
 }
@@ -149,6 +159,10 @@ export default {
   border: 1px solid #ccc;
   padding: 1em;
   margin-bottom: 2em;
+}
+
+.row-add {
+  margin-bottom: .5em;
 }
 
 .cate-add {

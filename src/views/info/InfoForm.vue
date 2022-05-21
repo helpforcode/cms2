@@ -18,7 +18,10 @@
           <van-switch v-model="form.visible"></van-switch>
         </template>
       </van-field>
-      <bottom-btn :button-click="submit">OK</bottom-btn>
+      <bottom-btn :button-click="submit"
+                  :back="toInfo"
+                  :split="true"
+      >OK</bottom-btn>
 
     </van-cell-group>
 
@@ -73,6 +76,9 @@ export default {
   methods: {
     onStateSelected(w) {
       console.log(w)
+    },
+    toInfo() {
+      this.$router.push({name: 'Info'})
     },
     submit() {
       let params = {
