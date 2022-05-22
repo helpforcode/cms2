@@ -26,13 +26,9 @@ export default {
     item: {},
     indexFiltered: [],
     wordsFiltered: [],
-    what: {
-      type: String,
-      default: 'x'
-    }
   },
   model: {
-    prop: 'what',
+    // prop: 'what',
   },
   data() {
     return {
@@ -52,12 +48,12 @@ export default {
     }
   },
   watch: {
-    item(newV, oldV) {
-      console.log("Watching item", oldV)
+    item(newV/*, oldV*/) {
+      // console.log("Watching item", oldV)
       this.localItem = newV;
     },
-    localItem(newV, oldV) {
-      console.log("Watching local item", oldV)
+    localItem(newV/*, oldV*/) {
+      // console.log("Watching local item", oldV)
       this.$emit('update:item', newV);
     },
     indexFiltered(newV) {
@@ -91,7 +87,7 @@ export default {
 .word-block {
   display: inline-flex;
   flex-direction: column;
-  width: 4em;
+  width: 3em;
   height: 3.5em;
   border: .5px solid #262626;
   border-radius: 0;

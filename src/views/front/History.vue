@@ -125,9 +125,9 @@ export default {
         this.indexFiltered.push(index)
       }
     },
-    filterBtnClick(word, i) {
-      console.log(word)
-      console.log(i)
+    filterBtnClick(word/*, i*/) {
+      // console.log(word)
+      // console.log(i)
       // this.wordsFilterBtn[word] = !this.wordsFilterBtn[word]
       // console.log(this.wordsFilterBtn[word])
       // this.$set(this.wordsFilterBtn, word, !this.wordsFilterBtn[word])
@@ -141,7 +141,7 @@ export default {
         // Vue.delete(this.wordsFiltered, word.word)
 
       }
-      console.log(this.wordsFiltered)
+      // console.log(this.wordsFiltered)
     },
     // filterBtnClass: function(word) {
     //   console.log(word)
