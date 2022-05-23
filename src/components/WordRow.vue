@@ -1,10 +1,17 @@
 <template>
   <div class="word-row">
-    <div class="word-block normal" v-for="(w, index) in localItem.words" v-bind:key="w.id" @click="normalClicked(w, index)">
+    <div class="word-block normal" :data-word="w.word"
+         v-for="(w, index) in localItem.words" v-bind:key="w.id"
+         :class="{inactive: localWordsFiltered.length > 0 && localWordsFiltered.indexOf(w.word) === -1
+         || localIndexFiltered.length > 0 && localIndexFiltered.indexOf(index) === -1}"
+         @click="normalClicked(w, index)">
       <span class="word-txt">{{w.word}}</span>
       <span class="word-id">{{w.id}}</span>
     </div>
-    <div class="word-block special" @click="primaryClicked(localItem.primaryWord)">
+    <div class="word-block special" :data-word="localItem.primaryWord.word"
+         :class="{inactive: localWordsFiltered.length > 0 && localWordsFiltered.indexOf(localItem.primaryWord.word) === -1
+         || localIndexFiltered.length > 0 && localIndexFiltered.indexOf(6) === -1}"
+         @click="primaryClicked(localItem.primaryWord)">
       <span class="word-txt">{{localItem.primaryWord.word}}</span>
       <span class="word-id">{{localItem.primaryWord.id}}</span>
     </div>
@@ -16,18 +23,17 @@
 export default {
   name: "WordRow",
   props: {
-    // todo:
     item: {},
-    what: {
-      type: String,
-      default: 'x'
-    }
+    indexFiltered: [],
+    wordsFiltered: [],
   },
   model: {
-    prop: 'what',
+    // prop: 'what',
   },
   data() {
     return {
+      localIndexFiltered: [],
+      localWordsFiltered: []
       // localItem: {}
     }
   },
@@ -42,17 +48,25 @@ export default {
     }
   },
   watch: {
-    item(newV, oldV) {
-      console.log("Watching item", oldV)
+    item(newV/*, oldV*/) {
+      // console.log("Watching item", oldV)
       this.localItem = newV;
     },
-    localItem(newV, oldV) {
-      console.log("Watching local item", oldV)
+    localItem(newV/*, oldV*/) {
+      // console.log("Watching local item", oldV)
       this.$emit('update:item', newV);
+    },
+    indexFiltered(newV) {
+      this.localIndexFiltered = newV
+    },
+    wordsFiltered(newV) {
+      this.localWordsFiltered = newV
     }
   },
   mounted() {
     this.localItem = this.item;
+    this.localIndexFiltered = this.indexFiltered || [];
+    this.localWordsFiltered = this.wordsFiltered || [];
   },
   methods: {
     primaryClicked(word) {
@@ -73,7 +87,7 @@ export default {
 .word-block {
   display: inline-flex;
   flex-direction: column;
-  width: 2em;
+  width: 3em;
   height: 3.5em;
   border: .5px solid #262626;
   border-radius: 0;
@@ -85,6 +99,9 @@ export default {
   height: 50%;
   width: 100%;
   font-weight: bold;
+}
+.word-block.inactive {
+  opacity: 40%;
 }
 .word-txt {
   border-top-right-radius: 0;

@@ -28,6 +28,7 @@
         <van-field
             v-model="formatDate"
             label="Day"
+            readonly
             @click="showDatePicker = true"
         />
       </div>
@@ -65,14 +66,10 @@ import word from "@/api/word";
 import moment from "@/util/moment";
 import BottomBtn from "@/components/BottomBtn";
 import WordRow from "@/components/WordRow";
+import toast from '@nutui/nutui/dist/packages/toast'
 
 const dateFormat = 'YYYY-MM-DD'
 const wordCapacity = 6
-
-// todo: order
-// todo: unique
-// todo: style: up/down
-// todo: schedule
 
 export default {
   name: "WordForm",
@@ -209,6 +206,17 @@ export default {
       // this.form.words.reverse().reverse()
       // this.$set(this.form.words, i, this.words[this.$refs.picker[i].getIndexes()[0]])
       // console.log(this.$refs)
+      let word = this.words[this.$refs['picker'+i][0].getIndexes()[0]];
+      let exist = false
+      this.form.words.forEach(w => {
+        if (w.id === word.id) {
+          exist = true
+        }
+      })
+      if (exist) {
+        toast.fail("已存在")
+        return
+      }
       this.$set(this.form.words, i, this.words[this.$refs['picker'+i][0].getIndexes()[0]])
       this.showPickers['picker'+i] = false
     },
