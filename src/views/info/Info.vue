@@ -1,7 +1,9 @@
 <template>
   <div class="cms-info">
     <div class="cate" v-for="(cate) in cates" :key="cate.cateId">
-      <div class="info-title" @click="to('InfoCateForm', {id: cate.cateId})">
+      <div class="info-title" @click="to('InfoCateForm', {id: cate.cateId})"
+           :class="cate.clickable ? 'clickable' : '' "
+      >
         {{ cate.cateName }}
         <span class="title-edit">
           <FontAwesomeIcon :icon="['fas', 'edit']"></FontAwesomeIcon>
@@ -114,6 +116,9 @@ export default {
 .info-title {
   font-weight: bold;
   margin-bottom: .5em;
+}
+.info-title.clickable {
+  color: #498ff2;
 }
 
 .visible {

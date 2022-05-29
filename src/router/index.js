@@ -9,6 +9,7 @@ import File from '../views/File'
 import Photo from '../views/Photo'
 import Info from '@/views/info/Info'
 import InfoForm from '@/views/info/InfoForm'
+import InfoDetail from '@/views/front/info/InfoDetail'
 import InfoCateForm from '@/views/info/InfoCateForm'
 import Prop from '@/views/prop/Prop'
 import PropForm from "@/views/prop/PropForm";
@@ -24,12 +25,18 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      anon: true,
+    }
   },
   {
     path: '/history',
     name: 'History',
-    component: History
+    component: History,
+    meta: {
+      anon: true,
+    }
   },
   {
     path: '/admin/login',
@@ -53,6 +60,11 @@ const routes = [
     path: '/admin/info/:cateId(\\d+)/:id(\\d+)',
     name: 'InfoForm',
     component: InfoForm
+  },
+  {
+    path: '/info/detail/:cateId(\\d+)/:title',
+    name: 'InfoDetail',
+    component: InfoDetail
   },
   {
     path: '/admin/info/:id(\\d+)',

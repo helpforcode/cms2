@@ -2,7 +2,10 @@
 import Vue from 'vue'
 
 export function all() {
-    return Vue.axios.get('/admin/info/all', {})
+    return Vue.axios.get('/info/all', {})
+}
+export function siblings(params) {
+    return Vue.axios.get('/info/siblings', {params: params})
 }
 export function detail(id) {
     return Vue.axios.get('/admin/info/'+id, {})

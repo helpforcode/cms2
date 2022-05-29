@@ -3,6 +3,11 @@
     <van-cell-group inset>
       <van-field v-model="form.name" label="Name" placeholder="name"/>
       <van-field v-model="form.od" label="Order" placeholder="order"/>
+      <van-field name="clickable" label="Clickable">
+        <template #input>
+          <van-switch v-model="form.clickable"></van-switch>
+        </template>
+      </van-field>
       <bottom-btn :button-click="submit" :split="true">OK</bottom-btn>
 
     </van-cell-group>
@@ -23,9 +28,10 @@ export default {
     return {
       id: 0,
       form: {
-        id: Number,
-        name: String,
-        od: Number,
+        id: 0,
+        name: "",
+        od: 0,
+        clickable: false,
       },
     }
   },
@@ -45,11 +51,7 @@ export default {
   },
   methods: {
     submit() {
-      let params = {
-        id: this.id,
-        name: this.form.name,
-        od: this.form.od,
-      }
+      let params = this.form
       let resolve = response => {
         if (response.status === 200) {
           this.$router.push({name: 'Info'})

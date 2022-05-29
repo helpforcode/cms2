@@ -25,7 +25,7 @@ export function saveAllProp(params) {
     return Vue.axios.post('/admin/prop/all', params)
 }
 export function allProp(params) {
-    return Vue.axios.get('/admin/prop/all', {params: params})
+    return Vue.axios.get('/prop/all', {params: params})
 }
 export function deleteProp(id) {
     return Vue.axios.delete('/admin/prop/' + id, {})
