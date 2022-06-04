@@ -9,6 +9,9 @@ export function articleGroup(params) {
 export function article(id) {
     return Vue.axios.get('/admin/article/'+id)
 }
+export function frontArticle(id) {
+    return Vue.axios.get('/article/'+id)
+}
 export function add(params) {
     return Vue.axios.post('/admin/article', params)
 }
@@ -23,4 +26,5 @@ export default {
     articles
     , articleGroup
     , remove
+    , frontArticle
 }

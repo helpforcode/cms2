@@ -7,6 +7,8 @@
     </van-sticky>
     <router-link :to="{name: 'History'}">To History</router-link>
 
+    <Articles/>
+
     <div>
       <!--  foreach category    -->
       <div v-for="group in infoTypes" :key="group.cateId">
@@ -46,6 +48,7 @@
   import DailyWord from "@/components/DailyWord";
   import info from "@/api/info";
   import Description from "@/components/Description";
+  import Articles from "@/components/Articles";
 
   export default {
     name: 'Home',
@@ -53,6 +56,7 @@
     components: {
       DailyWord,
       Description,
+      Articles,
     },
     data() {
       return {

@@ -56,13 +56,9 @@ export default {
   },
   mounted() {
     this.token = ls.get(ACCESS_TOKEN)
-    console.log("token:", this.token)
   },
   methods: {
     nav(item, index) {
-      console.log(item)
-      console.log(index)
-
       if (item.route === 'Logout') {
         this.logout()
         if (this.$route.name === 'Home') {

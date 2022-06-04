@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import History from '../views/front/History.vue'
+import FrontArticleDetail from '../views/front/article/ArticleDetail.vue'
 import Login from '../views/Login.vue'
 import ArticleForm from '../views/article/ArticleForm.vue'
 import ArticleDetail from '../views/article/ArticleDetail.vue'
@@ -39,6 +40,22 @@ const routes = [
     }
   },
   {
+    path: '/article/:id(\\d+)',
+    name: 'FrontArticleDetail',
+    component: FrontArticleDetail,
+    meta: {
+      anon: true,
+    }
+  },
+  {
+    path: '/info/detail/:cateId(\\d+)/:title',
+    name: 'InfoDetail',
+    component: InfoDetail,
+    meta: {
+      anon: true,
+    }
+  },
+  {
     path: '/admin/login',
     name: 'Login',
     component: Login
@@ -60,11 +77,6 @@ const routes = [
     path: '/admin/info/:cateId(\\d+)/:id(\\d+)',
     name: 'InfoForm',
     component: InfoForm
-  },
-  {
-    path: '/info/detail/:cateId(\\d+)/:title',
-    name: 'InfoDetail',
-    component: InfoDetail
   },
   {
     path: '/admin/info/:id(\\d+)',

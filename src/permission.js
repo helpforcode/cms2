@@ -21,12 +21,6 @@ router.beforeEach((to, from, next) => {
             }
         }
     } else {
-
-        // todo: identify token
-        console.log("Got token from storage:", token)
-        console.log("to:", to)
-        console.log("from:", from)
-
         if (to.name === 'Login') {
             // has token, login-->home
             next({name: 'Article'})

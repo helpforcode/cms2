@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     goBack() {
-      console.log(this.back)
       this.back !== undefined ? this.back() : this.$router.back()
     }
   },

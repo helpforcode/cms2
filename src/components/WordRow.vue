@@ -43,7 +43,6 @@ export default {
         return this.item
       },
       set(v) {
-        console.log(v)
       }
     }
   },

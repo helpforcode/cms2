@@ -64,14 +64,12 @@ export default {
       this.initSelected(val)
     },
     selectedKey(key) {
-      console.log('key', key)
       // sometimes this first
       this.initSelected(this.items)
     }
   },
   methods: {
     onClick() {
-      console.log('click')
       this.showPicker = true
     },
     onConfirm(values, indexes) {
@@ -81,7 +79,6 @@ export default {
       this.$emit('selected', this.items[indexes[0]][this.itemKey])
     },
     initSelected(items) {
-      console.log("init selected: ", items)
       items.forEach(item => {
         // if cate.id === 2
         if (item[this.itemKey] === this.selectedKey) {

@@ -24,8 +24,6 @@ export default {
   mounted() {
     this.cateId = Number(this.$route.params.cateId)
     this.title = this.$route.params.title
-    console.log(this.cateId)
-    console.log(this.title)
     siblings({cateId: this.cateId, title: this.title}).then(response => {
       this.siblings = response.data.data
     })

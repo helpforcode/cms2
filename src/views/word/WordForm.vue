@@ -242,7 +242,6 @@ export default {
     },
     save() {
       let resolved = response => {
-        console.log(response)
         if (response.status === 200) {
           this.$router.push({name: 'Words'})
         }
