@@ -4,7 +4,7 @@
 
       <router-view/>
 
-      <div class="fab-container" v-if="token">
+      <div class="fab-container" v-if="manage">
         <v-speed-dial
             bottom
             left
@@ -47,11 +47,17 @@ export default {
     return {
       token: undefined,
       navs: [
-        {icon: 'fa-home', route: 'HomeAdmin'},
+        // {icon: 'fa-home', route: 'HomeAdmin'},
+        {icon: 'fa-home', route: 'Article'},
         {icon: 'fa-key', route: 'Info'},
         {icon: 'fa-trophy', route: 'Words'},
         {icon: 'fa-sign-out', route: 'Logout'},
       ],
+    }
+  },
+  computed: {
+    manage: function() {
+      return this.token && this.$router.currentRoute.name !== 'Home';
     }
   },
   mounted() {

@@ -3,6 +3,7 @@
     <van-cell-group inset>
       <van-field v-model="form.code" label="Code" placeholder="code" />
       <van-field v-model="form.title" label="Title" placeholder="title"/>
+      <van-field v-model="form.name" label="Name" placeholder="name"/>
       <van-field v-model="form.remark" label="Remark" placeholder="remark"/>
 
       <options v-model="form.state"
@@ -18,6 +19,11 @@
           <van-switch v-model="form.visible"></van-switch>
         </template>
       </van-field>
+
+      <div v-if="cate.clickable">
+        <quill-editor v-model="form.content"></quill-editor>
+      </div>
+
       <bottom-btn :button-click="submit"
                   :back="toInfo"
                   :split="true"
@@ -32,6 +38,7 @@
 import Options from "@/components/Options";
 import BottomBtn from "@/components/BottomBtn";
 import {add, update, detail} from "@/api/info";
+import {cateDetail} from "@/api/info";
 
 export default {
   name: "InfoForm",
@@ -43,6 +50,7 @@ export default {
     return {
       id: 0,
       cateId: 0,
+      cate: {},
       form: {
         id: Number,
         cateId: Number,
@@ -72,10 +80,16 @@ export default {
         visible: true,
       }
     }
+
+    cateDetail(this.cateId).then(response => {
+      let data = response.data.data
+      this.cate = {
+        ...data
+      }
+    })
   },
   methods: {
     onStateSelected(w) {
-      console.log(w)
     },
     toInfo() {
       this.$router.push({name: 'Info'})
@@ -85,13 +99,14 @@ export default {
         id: this.id,
         code: this.form.code,
         title: this.form.title,
+        name: this.form.name,
+        content: this.form.content,
         cateId: this.form.cateId,
         remark: this.form.remark,
         visible: this.form.visible,
         state: this.form.state,
       }
       let resolve = response => {
-        console.log(response)
         if (response.status === 200) {
           this.$router.push({name: 'Info'})
         }

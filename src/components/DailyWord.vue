@@ -1,8 +1,17 @@
 <template>
-  <div>
+  <div class="daily-word-container">
+    <van-row class="banner">
 
-    <span>{{words.code}}</span>
-    <WordRow :item="words"/>
+    </van-row>
+    <van-row>
+      <van-col span="4" class="tt">
+        <div>什么菜</div>
+        <div>{{words.code}}次出</div>
+      </van-col>
+      <van-col span="20" class="daily-word-panel">
+        <WordRow :item="words"/>
+      </van-col>
+    </van-row>
   </div>
 </template>
 
@@ -30,6 +39,18 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.daily-word-container {
+  .tt {
+    vertical-align: center;
+    text-align: center;
+  }
+  .daily-word-panel {
+  }
+}
+.banner {
+  background-color: #b4a078;
+  height: 60px;
+  width: 100%;
+}
 </style>

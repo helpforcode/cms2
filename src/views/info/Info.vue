@@ -1,6 +1,7 @@
 <template>
   <div class="cms-info">
     <div class="cate" v-for="(cate) in cates" :key="cate.cateId">
+
       <div class="info-title" @click="to('InfoCateForm', {id: cate.cateId})"
            :class="cate.clickable ? 'clickable' : '' "
       >
@@ -9,45 +10,66 @@
           <FontAwesomeIcon :icon="['fas', 'edit']"></FontAwesomeIcon>
         </span>
       </div>
+
       <div class="info-container">
+
         <van-button class="row-add" type="default" @click="to('InfoForm', {id:0, cateId:cate.cateId})">
           <FontAwesomeIcon :icon="['fas', 'plus']"></FontAwesomeIcon>
         </van-button>
-        <van-row v-for="(info) in cate.infos" :key="info.id"
-                 class="info-row"
-                 :class="[info.visible ? '' : 'invisible', info.code === code ? 'cur' : '']"
-        >
-          <van-col span="1">
+
+        <!-- row -->
+        <div v-if="!cate.clickable">
+          <van-row v-for="(info) in cate.infos" :key="info.id"
+                   class="info-row"
+                   :class="[info.visible ? '' : 'invisible', info.code === code ? 'cur' : '']"
+          >
+            <van-col span="1">
                     <span class="inline-input visible">
                       <span class="circle-state" :class="info.visible ? 'visible' : 'invisible'">
                       </span>
                     </span>
-          </van-col>
-          <van-col span="2">
-            <span class="inline-input code">{{ info.code }}</span>
-          </van-col>
-          <van-col span="8">
-            <span class="inline-input tt">{{ info.title }}</span>
-          </van-col>
-          <van-col span="8">
-            <span class="inline-input remark">{{ info.remark }}</span>
-          </van-col>
-          <van-col span="3">
-                    <span class="inline-input state">
-                      <span :class="info.state === 1 ? 'active' : info.state === -1 ? 'inactive' : 'default'">
-                        <FontAwesomeIcon :icon="['fas', 'check']" v-if="info.state === 1"></FontAwesomeIcon>
-                        <FontAwesomeIcon :icon="['fas', 'close']" v-else-if="info.state === -1"></FontAwesomeIcon>
-                        <FontAwesomeIcon :icon="['fas', 'question']" v-else></FontAwesomeIcon>
-
-                      </span>
-                    </span>
-          </van-col>
-          <van-col span="2">
+            </van-col>
+            <van-col span="2">
+              <span class="inline-input code">{{ info.code }}</span>
+            </van-col>
+            <van-col span="8">
+              <span class="inline-input tt">{{ info.title }}</span>
+            </van-col>
+            <van-col span="4">
+              <span class="inline-input name">{{ info.name }}</span>
+            </van-col>
+            <van-col span="8">
+              <span class="inline-input remark">{{ info.remark }}</span>
+            </van-col>
+            <van-col span="1">
             <span @click="to('InfoForm', {id:info.id, cateId:cate.cateId})">
               <FontAwesomeIcon :icon="['fas', 'edit']"></FontAwesomeIcon>
             </span>
-          </van-col>
-        </van-row>
+            </van-col>
+          </van-row>
+        </div>
+        <div v-else>
+          <van-row v-for="(info) in cate.infos" :key="info.id"
+                   class="info-row"
+                   :class="[info.visible ? '' : 'invisible', info.code === code ? 'cur' : '']"
+          >
+            <van-col span="1">
+                    <span class="inline-input visible">
+                      <span class="circle-state" :class="info.visible ? 'visible' : 'invisible'">
+                      </span>
+                    </span>
+            </van-col>
+            <van-col span="22">
+              <span class="inline-input tt clickable">{{ info.title }}</span>
+            </van-col>
+            <van-col span="1">
+            <span :class="[info.content ? '' : 'empty-warn']"
+                  @click="to('InfoForm', {id:info.id, cateId:cate.cateId})">
+              <FontAwesomeIcon :icon="['fas', 'edit']"></FontAwesomeIcon>
+            </span>
+            </van-col>
+          </van-row>
+        </div>
       </div>
     </div>
     <div class="cate">
@@ -110,14 +132,14 @@ export default {
 
 <style scoped lang="scss">
 .cms-info {
-  padding: 3em;
+  padding: 1em;
 }
 
 .info-title {
   font-weight: bold;
   margin-bottom: .5em;
 }
-.info-title.clickable {
+.clickable {
   color: #498ff2;
 }
 
@@ -181,5 +203,8 @@ export default {
     height: 1em;
     border: 1px solid #ccc;
   }
+}
+.empty-warn {
+  color: indianred;
 }
 </style>

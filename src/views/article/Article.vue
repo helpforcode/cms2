@@ -9,7 +9,7 @@
       <van-row
           class="article-row"
           v-for="article in articles" :key="article.id"
-          :to="{name: 'ArticleDetail', params:{id: article.id}}"
+          :to="{name: 'ArticleForm', params:{id: article.id}}"
       >
         <van-col span="8">
           <div class="ico d-flex">
@@ -36,7 +36,7 @@
         <van-col span="16"
                  v-bind:class="{inactive: !article.display}"
                  class="van-ellipsis">
-          <router-link :to="{name: 'ArticleDetail', params:{id: article.id}}">{{article.title}}</router-link>
+          <router-link :to="{name: 'ArticleForm', params:{id: article.id}}">{{article.title}}</router-link>
         </van-col>
         <div class="van-hairline--bottom"></div>
       </van-row>
@@ -65,7 +65,10 @@ export default {
       loading: false,
       pageParams: {page: 0, size: 10},
       articles: [],
-      ops: [{op: 'edit', icon: 'fa-pen', routeName:'ArticleForm'}, {op: 'delete', icon: 'fa-trash-can'}],
+      ops: [
+        // {op: 'edit', icon: 'fa-pen', routeName:'ArticleForm'},
+        {op: 'delete', icon: 'fa-trash-can'}
+      ],
       timer: null,
     }
   },

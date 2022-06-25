@@ -1,31 +1,38 @@
 <template>
   <div>
-    <van-row v-for="info in siblings" :key="info.id">
-      <van-col>{{info.code}}</van-col>
-      <van-col>{{info.title}}</van-col>
-      <van-col>{{info.remark}}</van-col>
-    </van-row>
+    <daily-word/>
+
+    <div class="the-article" v-html="info.content"/>
+
+    <Description/>
+
   </div>
 </template>
 
 <script>
+import dailyWord from "@/components/DailyWord";
+import Description from "@/components/Description";
 // import Vue from 'vue'
-import {siblings} from "@/api/info";
+import {detail} from "@/api/info";
 // import axios from "axios";
 export default {
   name: 'InfoDetail',
+  components: {
+    dailyWord,
+    Description,
+  },
   data() {
     return {
       cateId: 0,
       title: '',
-      siblings: []
+      // siblings: []
+      info: {},
     }
   },
   mounted() {
-    this.cateId = Number(this.$route.params.cateId)
-    this.title = this.$route.params.title
-    siblings({cateId: this.cateId, title: this.title}).then(response => {
-      this.siblings = response.data.data
+    this.id = Number(this.$route.params.id)
+    detail(this.id).then(response => {
+      this.info = response.data.data
     })
   }
 }
